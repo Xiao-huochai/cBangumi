@@ -1,8 +1,9 @@
-import { useState } from "react";
-function App() {
-  const [count, setCount] = useState(0);
+import { RouterProvider } from "react-router-dom";
 
-  return <>oi</>;
+import { router } from "./router";
+
+function App() {
+  return <RouterProvider router={router} />;
 }
 
 export default App;
