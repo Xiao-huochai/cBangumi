@@ -1,1 +1,1 @@
-export type { ApiResult, PageResult } from "./api";
+export type { ApiResult, PageResult } from "@/types/api";

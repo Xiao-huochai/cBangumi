@@ -1,13 +1,13 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
-import { MainLayout } from "../components/MainLayout";
-import { LazyRoute } from "./LazyRoute";
+import { MainLayout } from "@/components/MainLayout";
+import { LazyRoute } from "@/router/LazyRoute";
 import {
   LoginView,
   ProfileView,
   RankingView,
   SubjectDetailView,
-} from "./lazyViews";
+} from "@/router/lazyViews";
 
 export const router = createBrowserRouter([
   {
