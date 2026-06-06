@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+import { RatingStars } from "@/components/RatingStars";
 import styles from "./RankingCard.module.scss";
 
 interface RankingCardProps {
@@ -27,7 +28,10 @@ export function RankingCard({
         <h2 className={styles.title}>{title}</h2>
         <div className={styles.meta}>
           <span className={styles.rank}>#{rank}</span>
-          <span className={styles.score}>{score.toFixed(1)}</span>
+          <div className={styles.scoreWrap}>
+            <RatingStars className={styles.rating} score={score} size={12} />
+            <span className={styles.score}>{score.toFixed(1)}</span>
+          </div>
         </div>
       </div>
     </Link>

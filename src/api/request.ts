@@ -33,3 +33,27 @@ export function getRankList(params: GetRankListParams = {}) {
     type: params.type,
   });
 }
+
+export interface SubjectDetail {
+  id: number;
+  type: SubjectType;
+  name: string;
+  nameCn: string | null;
+  summary: string | null;
+  score: number | null;
+  rank: number | null;
+  date: string | null;
+  siteScore: number;
+  siteScoreCount: number;
+  siteRankScore: number;
+  coverUrl: string;
+  largeImageUrl?: string;
+  commonImageUrl?: string;
+  mediumImageUrl?: string;
+  smallImageUrl?: string;
+  gridImageUrl?: string;
+}
+
+export function getSubjectDetail(subjectId: number) {
+  return api.get<SubjectDetail>(`/api/subjects/${subjectId}`);
+}

@@ -1,0 +1,13 @@
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  line-height: 0;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.star {
+  display: block;
+  flex: none;
+}

@@ -42,13 +42,23 @@
 .meta {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: flex-end;
   padding-top: clamp(6px, 1vw, 10px);
   color: #667085;
 }
 
 .rank {
   font-size: clamp(11px, 1.5vw, 13px);
+}
+
+.scoreWrap {
+  display: grid;
+  justify-items: end;
+  gap: 4px;
+}
+
+.rating {
+  min-height: 12px;
 }
 
 .score {
