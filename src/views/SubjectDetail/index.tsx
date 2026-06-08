@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import { getSubjectDetail } from "@/api";
 import type { SubjectDetail } from "@/api/request";
-import { RatingStars } from "@/components/RatingStars";
+import SubjectTags from "./components/SubjectTags";
 import styles from "./index.module.scss";
 
 function SubjectDetailView() {
@@ -18,7 +18,6 @@ function SubjectDetailView() {
     if (invalidSubjectId) {
       return;
     }
-
     async function fetchSubjectDetail() {
       setLoading(true);
       setError("");
@@ -69,11 +68,6 @@ function SubjectDetailView() {
                   <span>站内评分</span>
                   <div className={styles.metricScore}>
                     <strong>{subject.siteScore.toFixed(1)}</strong>
-                    <RatingStars
-                      className={styles.metricRating}
-                      score={subject.siteScore}
-                      size={16}
-                    />
                   </div>
                 </div>
                 <div className={styles.metric}>
@@ -93,6 +87,8 @@ function SubjectDetailView() {
               </ul>
             </div>
           </section>
+
+          <SubjectTags className={styles.section} tags={subject.tags} />
 
           <section className={styles.section}>
             <h2>简介</h2>

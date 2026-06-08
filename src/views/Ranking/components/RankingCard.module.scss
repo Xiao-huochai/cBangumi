@@ -50,21 +50,20 @@
 .rank {
   font-size: clamp(11px, 1.5vw, 13px);
 }
-
-.scoreWrap {
-  display: grid;
-  justify-items: end;
-  gap: 4px;
-}
-
-.rating {
-  min-height: 12px;
-}
-
 .score {
   color: #111827;
   font-size: clamp(13px, 1.9vw, 17px);
   font-weight: 600;
+}
+
+.scoreWrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.scoreIcon {
+  flex: none;
 }
 
 @include tablet {

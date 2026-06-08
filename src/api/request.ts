@@ -47,11 +47,17 @@ export interface SubjectDetail {
   siteScoreCount: number;
   siteRankScore: number;
   coverUrl: string;
+  tags: SubjectTag[] | string | null;
   largeImageUrl?: string;
   commonImageUrl?: string;
   mediumImageUrl?: string;
   smallImageUrl?: string;
   gridImageUrl?: string;
+}
+
+export interface SubjectTag {
+  name: string;
+  count: number;
 }
 
 export function getSubjectDetail(subjectId: number) {
