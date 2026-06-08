@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import type { SubjectTag } from "@/api/request";
 import styles from "./SubjectTags.module.scss";
 
@@ -5,6 +7,8 @@ interface SubjectTagsProps {
   className?: string;
   tags: SubjectTag[] | string | null;
 }
+
+const COLLAPSED_TAG_COUNT = 12;
 
 function normalizeTags(tags: SubjectTagsProps["tags"]): SubjectTag[] {
   if (!tags) {
@@ -34,7 +38,16 @@ function normalizeTags(tags: SubjectTagsProps["tags"]): SubjectTag[] {
 }
 
 function SubjectTags({ className, tags }: SubjectTagsProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const normalizedTags = normalizeTags(tags);
+  const visibleTags = isExpanded
+    ? normalizedTags
+    : normalizedTags.slice(0, COLLAPSED_TAG_COUNT);
+  const canExpand = normalizedTags.length > COLLAPSED_TAG_COUNT;
+
+  useEffect(() => {
+    setIsExpanded(false);
+  }, [tags]);
 
   if (normalizedTags.length === 0) {
     return null;
@@ -45,10 +58,21 @@ function SubjectTags({ className, tags }: SubjectTagsProps) {
       <div className={styles.wrap}>
         <div className={styles.header}>
           <h2>标签</h2>
-          <span className={styles.count}>{normalizedTags.length} 个</span>
+          <div className={styles.headerActions}>
+            <span className={styles.count}>{normalizedTags.length} 个</span>
+            {canExpand && (
+              <button
+                className={styles.expandButton}
+                type="button"
+                onClick={() => setIsExpanded((current) => !current)}
+              >
+                {isExpanded ? "收起" : "展开"}
+              </button>
+            )}
+          </div>
         </div>
         <div className={styles.list}>
-          {normalizedTags.map((tag) => (
+          {visibleTags.map((tag) => (
             <span className={styles.tag} key={`${tag.name}-${tag.count}`}>
               <span className={styles.name}>{tag.name}</span>
               <span className={styles.value}>{tag.count}</span>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { getSubjectDetail } from "@/api";
@@ -13,6 +13,9 @@ function SubjectDetailView() {
   const [subject, setSubject] = useState<SubjectDetail | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isSummaryExpanded, setIsSummaryExpanded] = useState(false);
+  const [canExpandSummary, setCanExpandSummary] = useState(false);
+  const summaryRef = useRef<HTMLParagraphElement | null>(null);
 
   useEffect(() => {
     if (invalidSubjectId) {
@@ -21,6 +24,7 @@ function SubjectDetailView() {
     async function fetchSubjectDetail() {
       setLoading(true);
       setError("");
+      setIsSummaryExpanded(false);
 
       try {
         const data = await getSubjectDetail(parsedSubjectId);
@@ -36,6 +40,37 @@ function SubjectDetailView() {
 
     void fetchSubjectDetail();
   }, [invalidSubjectId, parsedSubjectId]);
+
+  useEffect(() => {
+    const element = summaryRef.current;
+    if (!element || !subject?.summary) {
+      setCanExpandSummary(false);
+      return;
+    }
+
+    const updateOverflowState = () => {
+      const wasExpanded = isSummaryExpanded;
+
+      if (wasExpanded) {
+        element.classList.add(styles.summaryCollapsed);
+      }
+
+      setCanExpandSummary(element.scrollHeight > element.clientHeight + 1);
+
+      if (wasExpanded) {
+        element.classList.remove(styles.summaryCollapsed);
+      }
+    };
+
+    updateOverflowState();
+
+    const observer = new ResizeObserver(updateOverflowState);
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [subject?.summary, isSummaryExpanded]);
 
   return (
     <main className={styles.page}>
@@ -92,7 +127,31 @@ function SubjectDetailView() {
 
           <section className={styles.section}>
             <h2>简介</h2>
-            <p className={styles.summary}>{subject.summary || "暂无简介"}</p>
+            <div
+              className={`${styles.summaryWrap} ${
+                !isSummaryExpanded ? styles.summaryWrapCollapsed : ""
+              }`}
+            >
+              <p
+                ref={summaryRef}
+                className={`${styles.summary} ${
+                  !isSummaryExpanded ? styles.summaryCollapsed : ""
+                }`}
+              >
+                {subject.summary || "暂无简介"}
+              </p>
+              {canExpandSummary && (
+                <button
+                  className={`${styles.summaryToggle} ${
+                    isSummaryExpanded ? styles.summaryToggleExpanded : ""
+                  }`}
+                  type="button"
+                  onClick={() => setIsSummaryExpanded((current) => !current)}
+                >
+                  {isSummaryExpanded ? "收起" : "展开"}
+                </button>
+              )}
+            </div>
           </section>
 
           <section className={styles.section}>

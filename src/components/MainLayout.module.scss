@@ -7,6 +7,10 @@
   padding-bottom: 72px;
 }
 
+.contentWithBackButton {
+  padding-top: calc(72px + env(safe-area-inset-top));
+}
+
 .nav {
   position: fixed;
   right: 0;
