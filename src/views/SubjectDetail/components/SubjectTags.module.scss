@@ -8,16 +8,16 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-}
 
-.header h2 {
-  margin: 0;
-  font-size: 18px;
-}
+  h2 {
+    margin: 0;
+    font-size: 18px;
+  }
 
-.count {
-  color: #98a2b3;
-  font-size: 12px;
+  .count {
+    color: #98a2b3;
+    font-size: 12px;
+  }
 }
 
 .list {
@@ -35,18 +35,18 @@
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 999px;
-}
 
-.name {
-  font-size: 14px;
-  line-height: 1;
-}
+  .name {
+    font-size: 14px;
+    line-height: 1;
+  }
 
-.value {
-  padding: 2px 8px;
-  color: #475467;
-  font-size: 12px;
-  line-height: 1.2;
-  background: #e2e8f0;
-  border-radius: 999px;
+  .value {
+    padding: 2px 8px;
+    color: #475467;
+    font-size: 12px;
+    line-height: 1.2;
+    background: #e2e8f0;
+    border-radius: 999px;
+  }
 }
