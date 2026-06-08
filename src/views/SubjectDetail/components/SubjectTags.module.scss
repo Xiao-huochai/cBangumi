@@ -18,21 +18,26 @@
     color: #98a2b3;
     font-size: 12px;
   }
-}
 
-.headerActions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+  .headerActions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
 
-.expandButton {
-  padding: 0;
-  color: #2563eb;
-  font-size: 13px;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
+  .expandButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    color: #2563eb;
+    background: transparent;
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+  }
 }
 
 .list {

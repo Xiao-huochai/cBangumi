@@ -109,25 +109,25 @@
   }
 }
 
+.summaryWrap {
+  position: relative;
+
+  &Collapsed {
+    padding-bottom: 32px;
+  }
+}
+
 .summary {
   color: #344054;
   line-height: 1.8;
   white-space: pre-wrap;
-}
 
-.summaryWrap {
-  position: relative;
-}
-
-.summaryWrapCollapsed {
-  padding-bottom: 32px;
-}
-
-.summaryCollapsed {
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
+  &Collapsed {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+  }
 }
 
 .sectionHeader {
@@ -147,22 +147,15 @@
   bottom: 0;
   left: 50%;
   z-index: 1;
-  padding: 2px 14px;
-  color: #2563eb;
-  font-size: 13px;
-  line-height: 1.6;
-  background: rgba(255, 255, 255, 0.96);
-  border: 1px solid #dbeafe;
-  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 24px;
+  padding: 0;
+  color: #767e89;
   cursor: pointer;
   transform: translateX(-50%);
-}
-
-.summaryToggleExpanded {
-  position: static;
-  display: block;
-  margin: 12px auto 0;
-  transform: none;
 }
 
 .commentPlaceholder {

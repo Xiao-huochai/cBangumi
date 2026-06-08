@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 import type { SubjectTag } from "@/api/request";
 import styles from "./SubjectTags.module.scss";
@@ -38,16 +39,14 @@ function normalizeTags(tags: SubjectTagsProps["tags"]): SubjectTag[] {
 }
 
 function SubjectTags({ className, tags }: SubjectTagsProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [expandedTags, setExpandedTags] =
+    useState<SubjectTagsProps["tags"]>(null);
   const normalizedTags = normalizeTags(tags);
+  const isExpanded = expandedTags === tags;
   const visibleTags = isExpanded
     ? normalizedTags
     : normalizedTags.slice(0, COLLAPSED_TAG_COUNT);
   const canExpand = normalizedTags.length > COLLAPSED_TAG_COUNT;
-
-  useEffect(() => {
-    setIsExpanded(false);
-  }, [tags]);
 
   if (normalizedTags.length === 0) {
     return null;
@@ -64,9 +63,16 @@ function SubjectTags({ className, tags }: SubjectTagsProps) {
               <button
                 className={styles.expandButton}
                 type="button"
-                onClick={() => setIsExpanded((current) => !current)}
+                aria-label={isExpanded ? "收起标签" : "展开标签"}
+                onClick={() => {
+                  setExpandedTags((current) => (current === tags ? null : tags));
+                }}
               >
-                {isExpanded ? "收起" : "展开"}
+                {isExpanded ? (
+                  <ChevronUp size={16} strokeWidth={2.25} />
+                ) : (
+                  <ChevronDown size={16} strokeWidth={2.25} />
+                )}
               </button>
             )}
           </div>

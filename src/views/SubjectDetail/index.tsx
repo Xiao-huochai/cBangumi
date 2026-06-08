@@ -1,76 +1,25 @@
-import { useEffect, useRef, useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { useParams } from "react-router-dom";
 
-import { getSubjectDetail } from "@/api";
-import type { SubjectDetail } from "@/api/request";
 import SubjectTags from "./components/SubjectTags";
+import useExpandableSummary from "./hooks/useExpandableSummary";
+import useSubjectDetail from "./hooks/useSubjectDetail";
 import styles from "./index.module.scss";
 
 function SubjectDetailView() {
   const { subjectId } = useParams();
   const parsedSubjectId = Number(subjectId);
   const invalidSubjectId = !subjectId || Number.isNaN(parsedSubjectId);
-  const [subject, setSubject] = useState<SubjectDetail | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [isSummaryExpanded, setIsSummaryExpanded] = useState(false);
-  const [canExpandSummary, setCanExpandSummary] = useState(false);
-  const summaryRef = useRef<HTMLParagraphElement | null>(null);
-
-  useEffect(() => {
-    if (invalidSubjectId) {
-      return;
-    }
-    async function fetchSubjectDetail() {
-      setLoading(true);
-      setError("");
-      setIsSummaryExpanded(false);
-
-      try {
-        const data = await getSubjectDetail(parsedSubjectId);
-        setSubject(data);
-      } catch (requestError) {
-        setError(
-          requestError instanceof Error ? requestError.message : "请求失败",
-        );
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    void fetchSubjectDetail();
-  }, [invalidSubjectId, parsedSubjectId]);
-
-  useEffect(() => {
-    const element = summaryRef.current;
-    if (!element || !subject?.summary) {
-      setCanExpandSummary(false);
-      return;
-    }
-
-    const updateOverflowState = () => {
-      const wasExpanded = isSummaryExpanded;
-
-      if (wasExpanded) {
-        element.classList.add(styles.summaryCollapsed);
-      }
-
-      setCanExpandSummary(element.scrollHeight > element.clientHeight + 1);
-
-      if (wasExpanded) {
-        element.classList.remove(styles.summaryCollapsed);
-      }
-    };
-
-    updateOverflowState();
-
-    const observer = new ResizeObserver(updateOverflowState);
-    observer.observe(element);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [subject?.summary, isSummaryExpanded]);
+  const { subject, loading, error } = useSubjectDetail(
+    parsedSubjectId,
+    invalidSubjectId,
+  );
+  const {
+    summaryRef,
+    isExpanded: isSummaryExpanded,
+    canExpand: canExpandSummary,
+    toggleExpanded: toggleSummaryExpanded,
+  } = useExpandableSummary(subject?.summary, styles.summaryCollapsed);
 
   return (
     <main className={styles.page}>
@@ -142,13 +91,16 @@ function SubjectDetailView() {
               </p>
               {canExpandSummary && (
                 <button
-                  className={`${styles.summaryToggle} ${
-                    isSummaryExpanded ? styles.summaryToggleExpanded : ""
-                  }`}
+                  className={styles.summaryToggle}
                   type="button"
-                  onClick={() => setIsSummaryExpanded((current) => !current)}
+                  aria-label={isSummaryExpanded ? "收起简介" : "展开简介"}
+                  onClick={toggleSummaryExpanded}
                 >
-                  {isSummaryExpanded ? "收起" : "展开"}
+                  {isSummaryExpanded ? (
+                    <ChevronUp size={18} strokeWidth={2.25} />
+                  ) : (
+                    <ChevronDown size={18} strokeWidth={2.25} />
+                  )}
                 </button>
               )}
             </div>
