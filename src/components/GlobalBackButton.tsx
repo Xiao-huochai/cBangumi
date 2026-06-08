@@ -1,3 +1,4 @@
+import { ArrowLeft } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import styles from "./GlobalBackButton.module.scss";
@@ -28,10 +29,7 @@ export function GlobalBackButton() {
       onClick={handleBack}
       aria-label="返回上一级"
     >
-      <span className={styles.icon} aria-hidden="true">
-        ←
-      </span>
-      <span className={styles.label}>返回</span>
+      <ArrowLeft className={styles.icon} aria-hidden="true" />
     </button>
   );
 }

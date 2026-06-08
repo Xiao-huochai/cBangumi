@@ -3,11 +3,11 @@
   top: calc(16px + env(safe-area-inset-top));
   left: 16px;
   z-index: 20;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 6px;
   height: 40px;
-  padding: 0 14px;
+  width: 40px;
+  justify-content: center;
   color: #111827;
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid rgba(17, 24, 39, 0.08);
@@ -17,12 +17,7 @@
 }
 
 .icon {
-  font-size: 18px;
-  line-height: 1;
-}
-
-.label {
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1;
+  width: 18px;
+  height: 18px;
+  flex: none;
 }

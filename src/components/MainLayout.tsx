@@ -1,6 +1,5 @@
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 
-import { GlobalBackButton } from "@/components/GlobalBackButton";
 import styles from "./MainLayout.module.scss";
 
 const navItems = [
@@ -10,23 +9,10 @@ const navItems = [
   { label: "登录", to: "/login" },
 ];
 
-const rootPaths = new Set(navItems.map((item) => item.to));
-
 export function MainLayout() {
-  const location = useLocation();
-  const showBackButton = !rootPaths.has(location.pathname);
-
   return (
     <div className={styles.layout}>
-      <GlobalBackButton />
-
-      <div
-        className={
-          showBackButton
-            ? `${styles.content} ${styles.contentWithBackButton}`
-            : styles.content
-        }
-      >
+      <div className={styles.content}>
         <Outlet />
       </div>
 
