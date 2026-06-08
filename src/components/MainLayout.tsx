@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
-
+import { GlobalBackButton } from "./GlobalBackButton";
 import styles from "./MainLayout.module.scss";
 
 const navItems = [
@@ -13,6 +13,7 @@ export function MainLayout() {
   return (
     <div className={styles.layout}>
       <div className={styles.content}>
+        <GlobalBackButton></GlobalBackButton>
         <Outlet />
       </div>
 
