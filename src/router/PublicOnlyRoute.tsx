@@ -1,9 +1,9 @@
 import { Navigate, Outlet } from "react-router-dom";
 
-import { useAuth } from "@/auth/useAuth";
+import { useAuthStore } from "@/store";
 
 export function PublicOnlyRoute() {
-  const { initialized, isAuthenticated } = useAuth();
+  const { initialized, isAuthenticated } = useAuthStore();
 
   if (!initialized) {
     return null;

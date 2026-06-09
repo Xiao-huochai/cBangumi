@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { useAuth } from "@/auth/useAuth";
+import { useAuthStore } from "@/store";
 import styles from "./index.module.scss";
 
 function LoginView() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { signIn } = useAuth();
+  const { signIn } = useAuthStore();
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");

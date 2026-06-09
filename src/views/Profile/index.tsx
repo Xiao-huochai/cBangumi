@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useAuth } from "@/auth/useAuth";
+import { useAuthStore } from "@/store";
 import styles from "./index.module.scss";
 
 function ProfileView() {
   const navigate = useNavigate();
-  const { user, signOut } = useAuth();
+  const { user, signOut } = useAuthStore();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 

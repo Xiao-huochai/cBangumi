@@ -1,14 +1,23 @@
+import { useEffect } from "react";
 import { RouterProvider } from "react-router-dom";
 
-import { AuthProvider } from "@/auth/AuthProvider";
 import { router } from "@/router";
+import { useAuthStore } from "@/store";
 
 function App() {
-  return (
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
-  );
+  useEffect(() => {
+    void useAuthStore.getState().refreshUser().catch(() => {
+      useAuthStore.setState({
+        status: "anonymous",
+        user: null,
+        initialized: true,
+        isAuthenticated: false,
+        isLoading: false,
+      });
+    });
+  }, []);
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;

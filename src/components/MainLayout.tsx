@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from "react-router-dom";
 
-import { useAuth } from "@/auth/useAuth";
+import { useAuthStore } from "@/store";
 import { GlobalBackButton } from "./GlobalBackButton";
 import styles from "./MainLayout.module.scss";
 
@@ -10,7 +10,7 @@ const commonNavItems = [
 ];
 
 export function MainLayout() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuthStore();
   const navItems = [
     ...commonNavItems,
     isAuthenticated
