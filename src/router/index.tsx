@@ -2,6 +2,8 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import { MainLayout } from "@/components/MainLayout";
 import { LazyRoute } from "@/router/LazyRoute";
+import { ProtectedRoute } from "@/router/ProtectedRoute";
+import { PublicOnlyRoute } from "@/router/PublicOnlyRoute";
 import {
   LoginView,
   ProfileView,
@@ -35,20 +37,30 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "profile",
-        element: (
-          <LazyRoute>
-            <ProfileView />
-          </LazyRoute>
-        ),
+        element: <ProtectedRoute />,
+        children: [
+          {
+            path: "profile",
+            element: (
+              <LazyRoute>
+                <ProfileView />
+              </LazyRoute>
+            ),
+          },
+        ],
       },
       {
-        path: "login",
-        element: (
-          <LazyRoute>
-            <LoginView />
-          </LazyRoute>
-        ),
+        element: <PublicOnlyRoute />,
+        children: [
+          {
+            path: "login",
+            element: (
+              <LazyRoute>
+                <LoginView />
+              </LazyRoute>
+            ),
+          },
+        ],
       },
     ],
   },

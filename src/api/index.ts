@@ -1,5 +1,5 @@
 export { api, apiClient, ApiError } from "./client";
-export { login } from "./auth";
+export { getCurrentUser, login, logout } from "./auth";
 export {
   getMyCollections,
   getMyComments,

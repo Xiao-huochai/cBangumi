@@ -21,3 +21,11 @@ export function login(account: string, password: string) {
     password,
   });
 }
+
+export function getCurrentUser() {
+  return api.get<AuthUser>("/api/auth/me");
+}
+
+export function logout() {
+  return api.post<null>("/api/auth/logout");
+}

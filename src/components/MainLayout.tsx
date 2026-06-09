@@ -1,15 +1,23 @@
 import { NavLink, Outlet } from "react-router-dom";
+
+import { useAuth } from "@/auth/useAuth";
 import { GlobalBackButton } from "./GlobalBackButton";
 import styles from "./MainLayout.module.scss";
 
-const navItems = [
+const commonNavItems = [
   { label: "排行", to: "/ranking" },
   { label: "条目", to: "/subjects/8" },
-  { label: "个人", to: "/profile" },
-  { label: "登录", to: "/login" },
 ];
 
 export function MainLayout() {
+  const { isAuthenticated } = useAuth();
+  const navItems = [
+    ...commonNavItems,
+    isAuthenticated
+      ? { label: "个人", to: "/profile" }
+      : { label: "登录", to: "/login" },
+  ];
+
   return (
     <div className={styles.layout}>
       <div className={styles.content}>

@@ -1,15 +1,27 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import { login } from "@/api";
+import { useAuth } from "@/auth/useAuth";
 import styles from "./index.module.scss";
 
 function LoginView() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { signIn } = useAuth();
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const redirectTo =
+    typeof location.state === "object" &&
+    location.state &&
+    "from" in location.state &&
+    location.state.from &&
+    typeof location.state.from === "object" &&
+    "pathname" in location.state.from &&
+    typeof location.state.from.pathname === "string"
+      ? location.state.from.pathname
+      : "/profile";
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -31,8 +43,8 @@ function LoginView() {
     setError("");
 
     try {
-      await login(accountValue, passwordValue);
-      navigate("/profile");
+      await signIn(accountValue, passwordValue);
+      navigate(redirectTo, { replace: true });
     } catch (requestError) {
       setError(
         requestError instanceof Error ? requestError.message : "登录失败",
