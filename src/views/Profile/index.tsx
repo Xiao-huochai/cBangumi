@@ -1,34 +1,61 @@
+import { useEffect, useState } from "react";
+
+import { getMyCollections } from "@/api";
+import type { UserCollectionItem } from "@/api/profile";
 import { useAuthStore } from "@/store";
 import { CollectionCard } from "./components/CollectionCard";
 import { UserCard } from "./components/UserCard";
 import styles from "./index.module.scss";
 
-const mockCollections = [
-  {
-    id: 1,
-    userId: 100000001,
-    subjectId: 8,
-    subjectTitle: "Code Geass 反叛的鲁路修R2",
-    coverUrl: "/api/subjects/8/cover?type=small",
-    status: "DONE" as const,
-    ratingScore: 9,
-    commentContent:
-      "节奏很稳，结尾的情绪拉得很满，二刷还是会被打到。节奏很稳，结尾的情绪拉得很满，二刷还是会被打到。节奏很稳，结尾的情绪拉得很满，二刷还是会被打到。节奏很稳，结尾的情绪拉得很满，二刷还是会被打到。",
-  },
-  {
-    id: 2,
-    userId: 100000001,
-    subjectId: 16,
-    subjectTitle: "千与千寻",
-    coverUrl: "/api/subjects/16/cover?type=small",
-    status: "WISH" as const,
-    ratingScore: null,
-    commentContent: null,
-  },
-];
-
 function ProfileView() {
   const { user } = useAuthStore();
+  const [collections, setCollections] = useState<UserCollectionItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    let cancelled = false;
+
+    async function fetchCollections() {
+      setLoading(true);
+      setError("");
+
+      try {
+        const data = await getMyCollections({
+          page: 1,
+          size: 20,
+        });
+
+        if (cancelled) {
+          return;
+        }
+
+        setCollections(data.records);
+      } catch (requestError) {
+        if (cancelled) {
+          return;
+        }
+
+        setError(
+          requestError instanceof Error ? requestError.message : "请求失败",
+        );
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void fetchCollections();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user]);
 
   if (!user) {
     return null;
@@ -41,13 +68,17 @@ function ProfileView() {
       <section className={styles.section}>
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>收藏预览</h2>
-          <span className={styles.sectionMeta}>
-            {mockCollections.length} 项
-          </span>
+          <span className={styles.sectionMeta}>{collections.length} 项</span>
         </div>
 
+        {loading ? <div className={styles.state}>加载中...</div> : null}
+        {error ? <div className={styles.state}>{error}</div> : null}
+        {!loading && !error && collections.length === 0 ? (
+          <div className={styles.state}>还没有收藏记录</div>
+        ) : null}
+
         <div className={styles.list}>
-          {mockCollections.map((item) => (
+          {collections.map((item) => (
             <CollectionCard key={item.id} {...item} />
           ))}
         </div>
