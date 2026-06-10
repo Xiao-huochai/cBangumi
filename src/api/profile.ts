@@ -1,6 +1,7 @@
 import { api } from "@/api/client";
 
 import type { PageResult } from "@/types";
+import { getCurrentUser, type AuthUser } from "./auth";
 import type { SubjectType } from "./request";
 
 export type CollectionStatus =
@@ -10,79 +11,64 @@ export type CollectionStatus =
   | "ON_HOLD"
   | "DROPPED";
 
-export interface UserProfile {
-  id: number;
-  name: string;
-  phone: string;
-  email: string;
+export type UserProfile = AuthUser;
+
+export interface AvatarOption {
   avatarId: string;
-  createdAt: string;
-  updatedAt: string;
+  imagePath: string;
 }
 
-export interface UserStatsSummary {
-  collectionCount: number;
-  ratingCount: number;
-  commentCount: number;
-}
-
-export interface UserTypeStatsItem {
-  type: SubjectType;
-  collectionCount: number;
-  ratingCount: number;
-  commentCount: number;
-}
-
-export interface UserCollectionStats {
-  totalCount: number;
-  wishCount: number;
-  doingCount: number;
-  doneCount: number;
-  onHoldCount: number;
-  droppedCount: number;
-}
-
-export interface UserStats {
-  summary: UserStatsSummary;
-  collection: UserCollectionStats;
-  byType: UserTypeStatsItem[];
+export interface UpdateMyAvatarPayload {
+  avatarId: string;
 }
 
 export interface UserCollectionItem {
   id: number;
+  userId: number;
   subjectId: number;
-  subjectType: SubjectType;
-  subjectName: string;
-  subjectNameCn?: string | null;
+  subjectTitle: string;
   coverUrl: string;
   status: CollectionStatus;
-  score?: number | null;
-  comment?: string | null;
-  date?: string | null;
+  ratingScore?: number | null;
+  commentContent?: string | null;
+  createdAt: string;
   updatedAt: string;
 }
 
 export interface UserRatingItem {
   id: number;
+  userId: number;
   subjectId: number;
-  subjectType: SubjectType;
-  subjectName: string;
-  subjectNameCn?: string | null;
+  subjectTitle: string;
   coverUrl: string;
   score: number;
-  comment?: string | null;
+  siteScore: number;
+  siteScoreCount: number;
+  siteRankScore: number;
+  createdAt: string;
   updatedAt: string;
 }
 
 export interface UserCommentItem {
   id: number;
+  userId: number;
+  userName: string;
+  avatarId: string;
   subjectId: number;
-  subjectType: SubjectType;
-  subjectName: string;
-  subjectNameCn?: string | null;
+  subjectTitle: string;
   coverUrl: string;
-  comment: string;
-  score?: number | null;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UserLibraryItem {
+  subjectId: number;
+  subjectTitle: string;
+  coverUrl: string;
+  collectionStatus?: CollectionStatus | null;
+  ratingScore?: number | null;
+  commentContent?: string | null;
   updatedAt: string;
 }
 
@@ -96,25 +82,39 @@ export interface GetMyCollectionsParams {
 export interface GetMyRatingsParams {
   page?: number;
   size?: number;
-  type?: SubjectType;
 }
 
 export interface GetMyCommentsParams {
   page?: number;
   size?: number;
-  type?: SubjectType;
+}
+
+export interface GetMyLibraryParams {
+  page?: number;
+  size?: number;
+}
+
+function getMyUserId() {
+  return getCurrentUser().then((user) => user.id);
 }
 
 export function getMyProfile() {
-  return api.get<UserProfile>("/api/users/me");
+  return getCurrentUser();
 }
 
-export function getMyStats() {
-  return api.get<UserStats>("/api/users/me/stats");
+export function getAvatarOptions() {
+  return api.get<AvatarOption[]>("/api/users/avatar-options");
 }
 
-export function getMyCollections(params: GetMyCollectionsParams = {}) {
-  return api.get<PageResult<UserCollectionItem>>("/api/users/me/collections", {
+export function updateMyAvatar(data: UpdateMyAvatarPayload) {
+  return api.put<UserProfile>("/api/users/me/avatar", data);
+}
+
+export function getUserCollections(
+  userId: number,
+  params: GetMyCollectionsParams = {},
+) {
+  return api.get<PageResult<UserCollectionItem>>(`/api/users/${userId}/collections`, {
     page: params.page ?? 1,
     size: params.size ?? 20,
     type: params.type,
@@ -122,18 +122,48 @@ export function getMyCollections(params: GetMyCollectionsParams = {}) {
   });
 }
 
-export function getMyRatings(params: GetMyRatingsParams = {}) {
-  return api.get<PageResult<UserRatingItem>>("/api/users/me/ratings", {
+export async function getMyCollections(params: GetMyCollectionsParams = {}) {
+  const userId = await getMyUserId();
+
+  return getUserCollections(userId, params);
+}
+
+export function getUserRatings(userId: number, params: GetMyRatingsParams = {}) {
+  return api.get<PageResult<UserRatingItem>>(`/api/users/${userId}/ratings`, {
     page: params.page ?? 1,
     size: params.size ?? 20,
-    type: params.type,
   });
 }
 
-export function getMyComments(params: GetMyCommentsParams = {}) {
-  return api.get<PageResult<UserCommentItem>>("/api/users/me/comments", {
+export async function getMyRatings(params: GetMyRatingsParams = {}) {
+  const userId = await getMyUserId();
+
+  return getUserRatings(userId, params);
+}
+
+export function getUserComments(userId: number, params: GetMyCommentsParams = {}) {
+  return api.get<PageResult<UserCommentItem>>(`/api/users/${userId}/comments`, {
     page: params.page ?? 1,
     size: params.size ?? 20,
-    type: params.type,
+  });
+}
+
+export async function getMyComments(params: GetMyCommentsParams = {}) {
+  const userId = await getMyUserId();
+
+  return getUserComments(userId, params);
+}
+
+export function getMyLibrary(params: GetMyLibraryParams = {}) {
+  return api.get<PageResult<UserLibraryItem>>("/api/users/me/library", {
+    page: params.page ?? 1,
+    size: params.size ?? 20,
+  });
+}
+
+export function getUserLibrary(userId: number, params: GetMyLibraryParams = {}) {
+  return api.get<PageResult<UserLibraryItem>>(`/api/users/${userId}/library`, {
+    page: params.page ?? 1,
+    size: params.size ?? 20,
   });
 }
