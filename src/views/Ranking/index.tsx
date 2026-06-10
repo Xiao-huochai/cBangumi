@@ -1,43 +1,32 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import { getRankList } from "@/api";
-import type { RankItem } from "@/api/request";
 import { RankingCard } from "./components/RankingCard";
 import styles from "./index.module.scss";
 
 function RankingView() {
-  const [list, setList] = useState<RankItem[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const {
+    data: list = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["ranking", "ANIME", 1, 20],
+    queryFn: async () => {
+      const data = await getRankList({
+        page: 1,
+        size: 20,
+        type: "ANIME",
+      });
 
-  useEffect(() => {
-    async function fetchRankList() {
-      setLoading(true);
-      setError("");
-
-      try {
-        const data = await getRankList({
-          type: "ANIME",
-        });
-
-        setList(data.records);
-      } catch (requestError) {
-        setError(
-          requestError instanceof Error ? requestError.message : "请求失败",
-        );
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    void fetchRankList();
-  }, []);
+      return data.records;
+    },
+  });
 
   return (
     <main className={styles.page}>
       <h1>排行榜</h1>
-      {loading && <div>加载中...</div>}
-      {error && <div>{error}</div>}
+      {isLoading && <div>加载中...</div>}
+      {error && <div>{error.message}</div>}
       <div className={styles.grid}>
         {list.map((item) => (
           <RankingCard
