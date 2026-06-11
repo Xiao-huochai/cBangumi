@@ -11,7 +11,15 @@ export type CollectionStatus =
   | "ON_HOLD"
   | "DROPPED";
 
-export type UserProfile = AuthUser;
+export interface UserProfile {
+  id: number;
+  name: string;
+  phone: string;
+  email: string;
+  avatarId: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
 export interface AvatarOption {
   avatarId: string;

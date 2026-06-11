@@ -3,8 +3,6 @@ import { api } from "@/api/client";
 export interface AuthUser {
   id: number;
   name: string;
-  phone: string;
-  email: string;
   avatarId: string;
   createdAt: string;
   updatedAt: string;
