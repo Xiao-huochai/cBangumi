@@ -1,6 +1,8 @@
 interface StarIconProps {
   state?: 0 | 1 | 2;
   color?: string;
+  emptyFillColor?: string;
+  emptyStrokeColor?: string;
   size?: number;
   clipId?: string;
   className?: string;
@@ -12,6 +14,8 @@ const starPath =
 export function StarIcon({
   state = 2,
   color = "#fb8434",
+  emptyFillColor = "#ffffff",
+  emptyStrokeColor = color,
   size = 16,
   clipId = "star-half",
   className,
@@ -35,8 +39,8 @@ export function StarIcon({
 
       <path
         d={starPath}
-        fill={state === 2 ? color : "#ffffff"}
-        stroke={color}
+        fill={state === 2 ? color : emptyFillColor}
+        stroke={state === 2 ? color : emptyStrokeColor}
         strokeWidth="1.2"
         strokeLinejoin="round"
       />

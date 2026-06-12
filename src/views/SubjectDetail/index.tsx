@@ -1,10 +1,12 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { useState } from "react";
 import { useParams } from "react-router-dom";
+
+import { RatingStars } from "@/components/RatingStars";
 
 import SubjectCollectionModal from "./components/SubjectCollectionModal";
 import SubjectTags from "./components/SubjectTags";
 import useExpandableSummary from "./hooks/useExpandableSummary";
+import useSubjectCollectionState from "./hooks/useSubjectCollectionState";
 import useSubjectDetail from "./hooks/useSubjectDetail";
 import styles from "./index.module.scss";
 
@@ -12,9 +14,6 @@ function SubjectDetailView() {
   const { subjectId } = useParams();
   const parsedSubjectId = Number(subjectId);
   const invalidSubjectId = !subjectId || Number.isNaN(parsedSubjectId);
-  const [isCollectionModalOpen, setCollectionModalOpen] = useState(false);
-  const [ratingScore, setRatingScore] = useState<number | null>(null);
-  const [commentContent, setCommentContent] = useState("");
   const { subject, loading, error } = useSubjectDetail(
     parsedSubjectId,
     invalidSubjectId,
@@ -25,7 +24,34 @@ function SubjectDetailView() {
     canExpand: canExpandSummary,
     toggleExpanded: toggleSummaryExpanded,
   } = useExpandableSummary(subject?.summary, styles.summaryCollapsed);
+  const {
+    draftCommentContent,
+    draftRatingScore,
+    isCollected,
+    isCollectionModalOpen,
+    isSaving,
+    isSubjectStateLoading,
+    savedRatingScore,
+    savedUpdatedAt,
+    triggerVariant,
+    closeCollectionModal,
+    openCollectionModal,
+    saveCollection,
+    setDraftCommentContent,
+    setDraftRatingScore,
+  } = useSubjectCollectionState({
+    invalidSubjectId,
+    subjectId: parsedSubjectId,
+  });
   const subjectTitle = subject?.nameCn || subject?.name || "收藏作品";
+  const collectionTriggerClassName = [
+    styles.collectionTrigger,
+    triggerVariant === "idle"
+      ? styles.collectionTriggerIdle
+      : triggerVariant === "rated"
+        ? styles.collectionTriggerRated
+        : styles.collectionTriggerCollected,
+  ].join(" ");
 
   return (
     <main className={styles.page}>
@@ -75,15 +101,32 @@ function SubjectDetailView() {
                 <li>Bangumi 评分：{subject.score?.toFixed(1) ?? "-"}</li>
                 <li>站内排名分：{subject.siteRankScore.toFixed(2)}</li>
               </ul>
-
-              <button
-                className={styles.collectionTrigger}
-                type="button"
-                onClick={() => setCollectionModalOpen(true)}
-              >
-                收藏
-              </button>
             </div>
+          </section>
+
+          <section className={styles.collectionRow}>
+            <button
+              className={collectionTriggerClassName}
+              type="button"
+              disabled={isSubjectStateLoading}
+              onClick={openCollectionModal}
+            >
+              {!isCollected && <span>未收藏</span>}
+              {isCollected && savedUpdatedAt && (
+                <span className={styles.collectionDate}>{savedUpdatedAt}</span>
+              )}
+              {isCollected && !savedRatingScore && <span>已收藏</span>}
+              {isCollected && savedRatingScore && (
+                <RatingStars
+                  className={styles.collectionRatingStars}
+                  color="#ffffff"
+                  emptyFillColor="rgba(255, 255, 255, 0.12)"
+                  emptyStrokeColor="rgba(255, 255, 255, 0.48)"
+                  score={savedRatingScore}
+                  size={18}
+                />
+              )}
+            </button>
           </section>
 
           <SubjectTags className={styles.section} tags={subject.tags} />
@@ -134,13 +177,15 @@ function SubjectDetailView() {
 
       {subject && (
         <SubjectCollectionModal
-          commentContent={commentContent}
+          commentContent={draftCommentContent}
           isOpen={isCollectionModalOpen}
-          ratingScore={ratingScore}
+          isSaving={isSaving}
+          ratingScore={draftRatingScore}
           subjectTitle={subjectTitle}
-          onClose={() => setCollectionModalOpen(false)}
-          onCommentChange={setCommentContent}
-          onRatingChange={setRatingScore}
+          onClose={closeCollectionModal}
+          onCommentChange={setDraftCommentContent}
+          onRatingChange={setDraftRatingScore}
+          onSave={saveCollection}
         />
       )}
     </main>

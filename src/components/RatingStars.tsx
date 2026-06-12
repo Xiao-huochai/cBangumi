@@ -8,6 +8,8 @@ import styles from "./RatingStars.module.scss";
 interface RatingStarsProps {
   score: number;
   color?: string;
+  emptyFillColor?: string;
+  emptyStrokeColor?: string;
   maxScore?: number;
   starCount?: number;
   size?: number;
@@ -51,6 +53,8 @@ function getStarStates(
 export function RatingStars({
   score,
   color = "#fb8434",
+  emptyFillColor,
+  emptyStrokeColor,
   maxScore = 10,
   starCount = 5,
   size = 16,
@@ -71,6 +75,8 @@ export function RatingStars({
           className={styles.star}
           state={state}
           color={color}
+          emptyFillColor={emptyFillColor}
+          emptyStrokeColor={emptyStrokeColor}
           size={size}
           clipId={`${id}-half-${index}`}
         />

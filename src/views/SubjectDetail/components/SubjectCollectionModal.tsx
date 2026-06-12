@@ -8,11 +8,13 @@ import styles from "./SubjectCollectionModal.module.scss";
 interface SubjectCollectionModalProps {
   commentContent: string;
   isOpen: boolean;
+  isSaving?: boolean;
   ratingScore: number | null;
   subjectTitle: string;
   onClose: () => void;
   onCommentChange: (value: string) => void;
   onRatingChange: (score: number) => void;
+  onSave: () => void;
 }
 
 function getStarState(score: number | null, index: number) {
@@ -43,11 +45,13 @@ function getNextScore(event: MouseEvent<HTMLButtonElement>, starIndex: number) {
 function SubjectCollectionModal({
   commentContent,
   isOpen,
+  isSaving = false,
   ratingScore,
   subjectTitle,
   onClose,
   onCommentChange,
   onRatingChange,
+  onSave,
 }: SubjectCollectionModalProps) {
   const modalTitleId = useId();
 
@@ -99,6 +103,7 @@ function SubjectCollectionModal({
           className={styles.closeButton}
           type="button"
           aria-label="关闭弹窗"
+          disabled={isSaving}
           onClick={onClose}
         >
           <X size={20} strokeWidth={2.25} />
@@ -148,8 +153,13 @@ function SubjectCollectionModal({
           />
         </label>
 
-        <button className={styles.submitButton} type="button">
-          保存收藏
+        <button
+          className={styles.submitButton}
+          type="button"
+          disabled={isSaving}
+          onClick={onSave}
+        >
+          {isSaving ? "保存中..." : "保存收藏"}
         </button>
       </section>
     </div>

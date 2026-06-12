@@ -102,6 +102,19 @@ export interface GetMyLibraryParams {
   size?: number;
 }
 
+export interface SubjectState {
+  collectionStatus: CollectionStatus | null;
+  ratingScore: number | null;
+  commentContent: string | null;
+  updatedAt?: string;
+}
+
+export interface UpdateSubjectStatePayload {
+  collectionStatus?: CollectionStatus | null;
+  ratingScore?: number | null;
+  commentContent?: string | null;
+}
+
 function getMyUserId() {
   return getCurrentUser().then((user) => user.id);
 }
@@ -174,4 +187,15 @@ export function getUserLibrary(userId: number, params: GetMyLibraryParams = {}) 
     page: params.page ?? 1,
     size: params.size ?? 20,
   });
+}
+
+export function getMySubjectState(subjectId: number) {
+  return api.get<SubjectState>(`/api/subjects/${subjectId}/state/me`);
+}
+
+export function updateMySubjectState(
+  subjectId: number,
+  data: UpdateSubjectStatePayload,
+) {
+  return api.put<SubjectState>(`/api/subjects/${subjectId}/state`, data);
 }
