@@ -3,7 +3,7 @@
 .row {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin: 20px 0;
 }
 
 .trigger {
@@ -18,17 +18,17 @@
   font-weight: 600;
   font-size: 16px;
   letter-spacing: 0.02em;
-  border-radius: 999px;
+  border-radius: 20px;
   transition:
     transform 180ms ease,
     box-shadow 180ms ease,
     opacity 180ms ease;
 }
 
-.trigger:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 22px 44px rgba(17, 24, 39, 0.24);
-}
+// .trigger:hover {
+//   transform: translateY(-1px);
+//   box-shadow: 0 22px 44px rgba(17, 24, 39, 0.24);
+// }
 
 .idle {
   color: #475467;

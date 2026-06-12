@@ -23,13 +23,15 @@ export function GlobalBackButton() {
   };
 
   return (
-    <button
-      type="button"
-      className={styles.button}
-      onClick={handleBack}
-      aria-label="返回上一级"
-    >
-      <ArrowLeft className={styles.icon} aria-hidden="true" />
-    </button>
+    <div className={styles.bar}>
+      <button
+        type="button"
+        className={styles.button}
+        onClick={handleBack}
+        aria-label="返回上级"
+      >
+        <ArrowLeft className={styles.icon} aria-hidden="true" />
+      </button>
+    </div>
   );
 }
