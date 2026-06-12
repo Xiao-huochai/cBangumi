@@ -1,5 +1,7 @@
 export { api, apiClient, ApiError } from "./client";
 export { getCurrentUser, login, logout } from "./auth";
+export type { CommentItem, GetSubjectCommentsParams, SubjectCommentSort } from "./comments";
+export { getSubjectComments, likeComment, unlikeComment } from "./comments";
 export type { CollectionStatus, SubjectState, UpdateSubjectStatePayload } from "./profile";
 export {
   getAvatarOptions,

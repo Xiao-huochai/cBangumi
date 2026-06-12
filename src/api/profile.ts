@@ -59,12 +59,16 @@ export interface UserRatingItem {
 
 export interface UserCommentItem {
   id: number;
-  userId: number;
-  userName: string;
-  avatarId: string;
   subjectId: number;
   subjectTitle: string;
   coverUrl: string;
+  userId: number;
+  userName: string;
+  avatarId: string;
+  avatarUrl: string;
+  score: number | null;
+  likeCount: number;
+  liked: boolean;
   content: string;
   createdAt: string;
   updatedAt: string;
