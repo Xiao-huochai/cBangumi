@@ -1,6 +1,8 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 
+import SubjectCollectionModal from "./components/SubjectCollectionModal";
 import SubjectTags from "./components/SubjectTags";
 import useExpandableSummary from "./hooks/useExpandableSummary";
 import useSubjectDetail from "./hooks/useSubjectDetail";
@@ -10,6 +12,9 @@ function SubjectDetailView() {
   const { subjectId } = useParams();
   const parsedSubjectId = Number(subjectId);
   const invalidSubjectId = !subjectId || Number.isNaN(parsedSubjectId);
+  const [isCollectionModalOpen, setCollectionModalOpen] = useState(false);
+  const [ratingScore, setRatingScore] = useState<number | null>(null);
+  const [commentContent, setCommentContent] = useState("");
   const { subject, loading, error } = useSubjectDetail(
     parsedSubjectId,
     invalidSubjectId,
@@ -20,6 +25,7 @@ function SubjectDetailView() {
     canExpand: canExpandSummary,
     toggleExpanded: toggleSummaryExpanded,
   } = useExpandableSummary(subject?.summary, styles.summaryCollapsed);
+  const subjectTitle = subject?.nameCn || subject?.name || "收藏作品";
 
   return (
     <main className={styles.page}>
@@ -69,6 +75,14 @@ function SubjectDetailView() {
                 <li>Bangumi 评分：{subject.score?.toFixed(1) ?? "-"}</li>
                 <li>站内排名分：{subject.siteRankScore.toFixed(2)}</li>
               </ul>
+
+              <button
+                className={styles.collectionTrigger}
+                type="button"
+                onClick={() => setCollectionModalOpen(true)}
+              >
+                收藏
+              </button>
             </div>
           </section>
 
@@ -116,6 +130,18 @@ function SubjectDetailView() {
             </div>
           </section>
         </>
+      )}
+
+      {subject && (
+        <SubjectCollectionModal
+          commentContent={commentContent}
+          isOpen={isCollectionModalOpen}
+          ratingScore={ratingScore}
+          subjectTitle={subjectTitle}
+          onClose={() => setCollectionModalOpen(false)}
+          onCommentChange={setCommentContent}
+          onRatingChange={setRatingScore}
+        />
       )}
     </main>
   );

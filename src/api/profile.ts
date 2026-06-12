@@ -1,7 +1,7 @@
 import { api } from "@/api/client";
 
 import type { PageResult } from "@/types";
-import { getCurrentUser, type AuthUser } from "./auth";
+import { getCurrentUser } from "./auth";
 import type { SubjectType } from "./request";
 
 export type CollectionStatus =

@@ -1,0 +1,132 @@
+@use "@/styles/breakpoints" as *;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 24px 12px 12px;
+  background: rgba(15, 23, 42, 0.44);
+  backdrop-filter: blur(10px);
+}
+
+.modal {
+  position: relative;
+  width: min(100%, 520px);
+  padding: 22px 18px 18px;
+  background:
+    radial-gradient(circle at top, rgba(251, 132, 52, 0.12), transparent 42%),
+    linear-gradient(180deg, #fffdf9 0%, #fff 100%);
+  border: 1px solid rgba(17, 24, 39, 0.08);
+  border-radius: 28px;
+  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.22);
+}
+
+.closeButton {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: #344054;
+}
+
+.header {
+  display: grid;
+  padding-top: 28px;
+
+  h2 {
+    padding-right: 28px;
+    font-size: clamp(22px, 5vw, 30px);
+    line-height: 1.15;
+  }
+}
+
+.ratingEditor {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  margin-top: 28px;
+}
+
+.starButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  padding: 6px 0;
+}
+
+.starIcon {
+  filter: drop-shadow(0 10px 18px rgba(251, 132, 52, 0.18));
+}
+
+.ratingMeta {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 14px;
+
+  strong {
+    color: #111827;
+    font-size: 16px;
+  }
+}
+
+.commentField {
+  display: grid;
+  gap: 10px;
+  margin-top: 22px;
+
+  span {
+    color: #344054;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  textarea {
+    min-height: 144px;
+    padding: 14px 16px;
+    color: #1f2937;
+    line-height: 1.7;
+    background: rgba(248, 250, 252, 0.82);
+    border: 1px solid #d0d5dd;
+    border-radius: 18px;
+
+    &::placeholder {
+      color: #98a2b3;
+    }
+  }
+}
+
+.submitButton {
+  width: 100%;
+  min-height: 52px;
+  margin-top: 20px;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: linear-gradient(135deg, #fb8434 0%, #f97316 100%);
+  border-radius: 18px;
+  box-shadow: 0 18px 34px rgba(249, 115, 22, 0.28);
+}
+
+@include tablet {
+  .overlay {
+    align-items: center;
+    padding: 24px;
+  }
+
+  .modal {
+    padding: 28px 24px 22px;
+  }
+
+  .ratingEditor {
+    gap: 10px;
+  }
+}
