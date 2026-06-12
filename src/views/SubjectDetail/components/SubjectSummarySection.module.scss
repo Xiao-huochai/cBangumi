@@ -1,0 +1,49 @@
+.section {
+  margin-top: 24px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.section h2 {
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+
+.summaryWrap {
+  position: relative;
+}
+
+.summaryWrapCollapsed {
+  padding-bottom: 32px;
+}
+
+.summary {
+  color: #344054;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+.summaryCollapsed {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+.summaryToggle {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 24px;
+  padding: 0;
+  color: #767e89;
+  cursor: pointer;
+  transform: translateX(-50%);
+}

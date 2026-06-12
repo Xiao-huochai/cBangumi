@@ -1,0 +1,28 @@
+.section {
+  margin-top: 24px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sectionHeader span {
+  color: #98a2b3;
+  font-size: 12px;
+}
+
+.commentPlaceholder {
+  min-height: 120px;
+  padding: 16px;
+  color: #667085;
+  background: #f8fafc;
+  border: 1px dashed #d0d5dd;
+  border-radius: 10px;
+}

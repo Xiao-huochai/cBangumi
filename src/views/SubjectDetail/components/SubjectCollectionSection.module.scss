@@ -1,0 +1,79 @@
+@use "@/styles/breakpoints" as *;
+
+.row {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 54px;
+  padding: 0 24px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  border-radius: 999px;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    opacity 180ms ease;
+}
+
+.trigger:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 22px 44px rgba(17, 24, 39, 0.24);
+}
+
+.idle {
+  color: #475467;
+  background: linear-gradient(135deg, #e5e7eb 0%, #cfd4dc 100%);
+  box-shadow: 0 14px 30px rgba(148, 163, 184, 0.18);
+}
+
+.collected {
+  background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+  box-shadow: 0 18px 36px rgba(71, 85, 105, 0.24);
+}
+
+.rated {
+  background: linear-gradient(135deg, #ec4899 0%, #f973a8 54%, #fb7185 100%);
+  box-shadow: 0 18px 36px rgba(236, 72, 153, 0.28);
+}
+
+.date {
+  opacity: 0.9;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+.ratingStars {
+  transform: scale(1.08);
+  transform-origin: center;
+}
+
+@include tablet {
+  .row {
+    margin-top: 24px;
+  }
+
+  .trigger {
+    min-height: 58px;
+    padding: 0 28px;
+    font-size: 17px;
+  }
+
+  .date {
+    font-size: 15px;
+  }
+
+  .ratingStars {
+    transform: scale(1.16);
+  }
+}

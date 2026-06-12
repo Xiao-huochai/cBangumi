@@ -1,9 +1,10 @@
-import { ChevronDown, ChevronUp } from "lucide-react";
 import { useParams } from "react-router-dom";
 
-import { RatingStars } from "@/components/RatingStars";
-
+import SubjectCollectionSection from "./components/SubjectCollectionSection";
 import SubjectCollectionModal from "./components/SubjectCollectionModal";
+import SubjectCommentsSection from "./components/SubjectCommentsSection";
+import SubjectHeroSection from "./components/SubjectHeroSection";
+import SubjectSummarySection from "./components/SubjectSummarySection";
 import SubjectTags from "./components/SubjectTags";
 import useExpandableSummary from "./hooks/useExpandableSummary";
 import useSubjectCollectionState from "./hooks/useSubjectCollectionState";
@@ -44,14 +45,6 @@ function SubjectDetailView() {
     subjectId: parsedSubjectId,
   });
   const subjectTitle = subject?.nameCn || subject?.name || "收藏作品";
-  const collectionTriggerClassName = [
-    styles.collectionTrigger,
-    triggerVariant === "idle"
-      ? styles.collectionTriggerIdle
-      : triggerVariant === "rated"
-        ? styles.collectionTriggerRated
-        : styles.collectionTriggerCollected,
-  ].join(" ");
 
   return (
     <main className={styles.page}>
@@ -61,117 +54,28 @@ function SubjectDetailView() {
 
       {!invalidSubjectId && subject && (
         <>
-          <section className={styles.hero}>
-            <div className={styles.coverWrap}>
-              <img
-                className={styles.cover}
-                src={subject.coverUrl}
-                alt={subject.nameCn || subject.name}
-              />
-            </div>
+          <SubjectHeroSection subject={subject} />
 
-            <div className={styles.main}>
-              <div className={styles.heading}>
-                <span className={styles.type}>{subject.type}</span>
-                <h1>{subject.nameCn || subject.name}</h1>
-                {subject.nameCn && subject.nameCn !== subject.name && (
-                  <p className={styles.originalName}>{subject.name}</p>
-                )}
-              </div>
-
-              <div className={styles.metrics}>
-                <div className={styles.metric}>
-                  <span>站内评分</span>
-                  <div className={styles.metricScore}>
-                    <strong>{subject.siteScore.toFixed(1)}</strong>
-                  </div>
-                </div>
-                <div className={styles.metric}>
-                  <span>评分人数</span>
-                  <strong>{subject.siteScoreCount}</strong>
-                </div>
-                <div className={styles.metric}>
-                  <span>Bangumi 排名</span>
-                  <strong>{subject.rank ?? "-"}</strong>
-                </div>
-              </div>
-
-              <ul className={styles.meta}>
-                <li>放送/发售：{subject.date || "-"}</li>
-                <li>Bangumi 评分：{subject.score?.toFixed(1) ?? "-"}</li>
-                <li>站内排名分：{subject.siteRankScore.toFixed(2)}</li>
-              </ul>
-            </div>
-          </section>
-
-          <section className={styles.collectionRow}>
-            <button
-              className={collectionTriggerClassName}
-              type="button"
-              disabled={isSubjectStateLoading}
-              onClick={openCollectionModal}
-            >
-              {!isCollected && <span>未收藏</span>}
-              {isCollected && savedUpdatedAt && (
-                <span className={styles.collectionDate}>{savedUpdatedAt}</span>
-              )}
-              {isCollected && !savedRatingScore && <span>已收藏</span>}
-              {isCollected && savedRatingScore && (
-                <RatingStars
-                  className={styles.collectionRatingStars}
-                  color="#ffffff"
-                  emptyFillColor="rgba(255, 255, 255, 0.12)"
-                  emptyStrokeColor="rgba(255, 255, 255, 0.48)"
-                  score={savedRatingScore}
-                  size={18}
-                />
-              )}
-            </button>
-          </section>
+          <SubjectCollectionSection
+            dateText={savedUpdatedAt}
+            isCollected={isCollected}
+            isLoading={isSubjectStateLoading}
+            ratingScore={savedRatingScore}
+            variant={triggerVariant}
+            onClick={openCollectionModal}
+          />
 
           <SubjectTags className={styles.section} tags={subject.tags} />
 
-          <section className={styles.section}>
-            <h2>简介</h2>
-            <div
-              className={`${styles.summaryWrap} ${
-                !isSummaryExpanded ? styles.summaryWrapCollapsed : ""
-              }`}
-            >
-              <p
-                ref={summaryRef}
-                className={`${styles.summary} ${
-                  !isSummaryExpanded ? styles.summaryCollapsed : ""
-                }`}
-              >
-                {subject.summary || "暂无简介"}
-              </p>
-              {canExpandSummary && (
-                <button
-                  className={styles.summaryToggle}
-                  type="button"
-                  aria-label={isSummaryExpanded ? "收起简介" : "展开简介"}
-                  onClick={toggleSummaryExpanded}
-                >
-                  {isSummaryExpanded ? (
-                    <ChevronUp size={18} strokeWidth={2.25} />
-                  ) : (
-                    <ChevronDown size={18} strokeWidth={2.25} />
-                  )}
-                </button>
-              )}
-            </div>
-          </section>
+          <SubjectSummarySection
+            canExpand={canExpandSummary}
+            isExpanded={isSummaryExpanded}
+            summary={subject.summary}
+            summaryRef={summaryRef}
+            toggleExpanded={toggleSummaryExpanded}
+          />
 
-          <section className={styles.section}>
-            <div className={styles.sectionHeader}>
-              <h2>评论区</h2>
-              <span>暂未接入</span>
-            </div>
-            <div className={styles.commentPlaceholder}>
-              评论列表和发布入口后面接。
-            </div>
-          </section>
+          <SubjectCommentsSection />
         </>
       )}
 
