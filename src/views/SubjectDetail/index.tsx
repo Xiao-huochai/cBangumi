@@ -65,7 +65,7 @@ function SubjectDetailView() {
             onClick={openCollectionModal}
           />
 
-          <SubjectTags className={styles.section} tags={subject.tags} />
+          <SubjectTags tags={subject.tags} />
 
           <SubjectSummarySection
             canExpand={canExpandSummary}

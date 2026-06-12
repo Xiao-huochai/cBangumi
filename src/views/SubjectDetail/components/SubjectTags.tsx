@@ -5,7 +5,6 @@ import type { SubjectTag } from "@/api/request";
 import styles from "./SubjectTags.module.scss";
 
 interface SubjectTagsProps {
-  className?: string;
   tags: SubjectTag[] | string | null;
 }
 
@@ -38,7 +37,7 @@ function normalizeTags(tags: SubjectTagsProps["tags"]): SubjectTag[] {
   }
 }
 
-function SubjectTags({ className, tags }: SubjectTagsProps) {
+function SubjectTags({ tags }: SubjectTagsProps) {
   const [expandedTags, setExpandedTags] =
     useState<SubjectTagsProps["tags"]>(null);
   const normalizedTags = normalizeTags(tags);
@@ -53,7 +52,7 @@ function SubjectTags({ className, tags }: SubjectTagsProps) {
   }
 
   return (
-    <section className={className}>
+    <section className={styles.section}>
       <div className={styles.wrap}>
         <div className={styles.header}>
           <h2>标签</h2>

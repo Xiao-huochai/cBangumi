@@ -1,14 +1,15 @@
 .section {
   margin-top: 24px;
-  padding: 16px;
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  padding: 16px 0;
+  // background: #fff;
+  // border: 1px solid #e5e7eb;
   border-radius: 12px;
 }
 
 .section h2 {
   margin-bottom: 12px;
   font-size: 18px;
+  text-align: left;
 }
 
 .summaryWrap {

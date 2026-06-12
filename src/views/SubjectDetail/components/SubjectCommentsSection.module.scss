@@ -1,8 +1,8 @@
 .section {
   margin-top: 24px;
-  padding: 16px;
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  // padding: 16px;
+  // background: #fff;
+  // border: 1px solid #e5e7eb;
   border-radius: 12px;
 }
 
@@ -11,6 +11,11 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+}
+
+.sectionHeader h2 {
+  font-size: 18px;
+  text-align: left;
 }
 
 .sectionHeader span {

@@ -97,6 +97,11 @@
     &::placeholder {
       color: #98a2b3;
     }
+    &:focus-visible {
+      outline: none;
+      border-color: none;
+      box-shadow: none;
+    }
   }
 }
 

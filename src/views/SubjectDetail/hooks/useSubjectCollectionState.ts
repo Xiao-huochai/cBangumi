@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import {
@@ -54,25 +54,31 @@ export default function useSubjectCollectionState({
   const queryClient = useQueryClient();
   const { initialized, isAuthenticated, user } = useAuthStore();
   const [isCollectionModalOpen, setCollectionModalOpen] = useState(false);
-  const [savedRatingScore, setSavedRatingScore] = useState<number | null>(null);
-  const [savedCommentContent, setSavedCommentContent] = useState("");
-  const [savedCollectionStatus, setSavedCollectionStatus] =
-    useState<CollectionStatus | null>(null);
-  const [savedUpdatedAt, setSavedUpdatedAt] = useState("");
   const [draftRatingScore, setDraftRatingScore] = useState<number | null>(null);
   const [draftCommentContent, setDraftCommentContent] = useState("");
-  const isCollected = Boolean(savedCollectionStatus);
-  const triggerVariant = !isCollected
-    ? "idle"
-    : savedRatingScore
-      ? "rated"
-      : "collected";
 
   const { data: subjectState, isLoading: isSubjectStateLoading } = useQuery({
     queryKey: ["subject-state", user?.id, subjectId],
     queryFn: () => getMySubjectState(subjectId),
     enabled: !invalidSubjectId && initialized && isAuthenticated,
   });
+  const savedCollectionStatus: CollectionStatus | null =
+    initialized && isAuthenticated ? subjectState?.collectionStatus ?? null : null;
+  const savedRatingScore =
+    initialized && isAuthenticated ? subjectState?.ratingScore ?? null : null;
+  const savedCommentContent =
+    initialized && isAuthenticated ? subjectState?.commentContent ?? "" : "";
+  const savedUpdatedAt =
+    initialized && isAuthenticated
+      ? formatCollectionDate(subjectState?.updatedAt) ||
+        (savedCollectionStatus ? getTodayDateString() : "")
+      : "";
+  const isCollected = Boolean(savedCollectionStatus);
+  const triggerVariant = !isCollected
+    ? "idle"
+    : savedRatingScore
+      ? "rated"
+      : "collected";
 
   const saveSubjectStateMutation = useMutation({
     mutationFn: () =>
@@ -82,55 +88,15 @@ export default function useSubjectCollectionState({
         commentContent: draftCommentContent.trim() || null,
       }),
     onSuccess: (nextState) => {
-      const nextUpdatedAt =
-        formatCollectionDate(nextState.updatedAt) ||
-        (nextState.collectionStatus ? getTodayDateString() : "");
-
       queryClient.setQueryData(
         ["subject-state", user?.id, subjectId],
         nextState,
       );
-      setSavedCollectionStatus(nextState.collectionStatus);
-      setSavedRatingScore(nextState.ratingScore);
-      setSavedCommentContent(nextState.commentContent ?? "");
-      setSavedUpdatedAt(nextUpdatedAt);
       setDraftRatingScore(nextState.ratingScore);
       setDraftCommentContent(nextState.commentContent ?? "");
       setCollectionModalOpen(false);
     },
   });
-
-  useEffect(() => {
-    if (!initialized) {
-      return;
-    }
-
-    if (!isAuthenticated) {
-      setSavedCollectionStatus(null);
-      setSavedRatingScore(null);
-      setSavedCommentContent("");
-      setSavedUpdatedAt("");
-      setDraftRatingScore(null);
-      setDraftCommentContent("");
-    }
-  }, [initialized, isAuthenticated]);
-
-  useEffect(() => {
-    if (!subjectState) {
-      return;
-    }
-
-    const nextUpdatedAt =
-      formatCollectionDate(subjectState.updatedAt) ||
-      (subjectState.collectionStatus ? getTodayDateString() : "");
-
-    setSavedCollectionStatus(subjectState.collectionStatus);
-    setSavedRatingScore(subjectState.ratingScore);
-    setSavedCommentContent(subjectState.commentContent ?? "");
-    setSavedUpdatedAt(nextUpdatedAt);
-    setDraftRatingScore(subjectState.ratingScore);
-    setDraftCommentContent(subjectState.commentContent ?? "");
-  }, [subjectState]);
 
   function openCollectionModal() {
     if (!initialized) {
