@@ -130,7 +130,7 @@ function SubjectCollectionModal({
                 <StarIcon
                   className={styles.starIcon}
                   state={getStarState(ratingScore, starIndex)}
-                  size={34}
+                  size={45}
                   clipId={`subject-detail-star-${starIndex}`}
                 />
               </button>

@@ -86,7 +86,10 @@ export default function useSubjectCollectionState({
         formatCollectionDate(nextState.updatedAt) ||
         (nextState.collectionStatus ? getTodayDateString() : "");
 
-      queryClient.setQueryData(["subject-state", user?.id, subjectId], nextState);
+      queryClient.setQueryData(
+        ["subject-state", user?.id, subjectId],
+        nextState,
+      );
       setSavedCollectionStatus(nextState.collectionStatus);
       setSavedRatingScore(nextState.ratingScore);
       setSavedCommentContent(nextState.commentContent ?? "");
