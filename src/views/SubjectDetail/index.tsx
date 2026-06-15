@@ -75,7 +75,7 @@ function SubjectDetailView() {
             toggleExpanded={toggleSummaryExpanded}
           />
 
-          <SubjectCommentsSection />
+          <SubjectCommentsSection subjectId={parsedSubjectId} />
         </>
       )}
 
