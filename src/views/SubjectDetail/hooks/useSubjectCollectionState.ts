@@ -92,6 +92,9 @@ export default function useSubjectCollectionState({
         ["subject-state", user?.id, subjectId],
         nextState,
       );
+      void queryClient.invalidateQueries({
+        queryKey: ["my-collections", user?.id],
+      });
       setDraftRatingScore(nextState.ratingScore);
       setDraftCommentContent(nextState.commentContent ?? "");
       setCollectionModalOpen(false);

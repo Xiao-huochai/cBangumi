@@ -24,6 +24,8 @@ function ProfileView() {
       return data.records;
     },
     enabled: Boolean(user),
+    staleTime: Number.POSITIVE_INFINITY,
+    refetchOnWindowFocus: false,
   });
 
   if (!user) {

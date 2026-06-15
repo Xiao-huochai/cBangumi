@@ -116,6 +116,8 @@ function SubjectCommentsSection({ subjectId }: SubjectCommentsSectionProps) {
     getNextPageParam: (lastPage) =>
       lastPage.hasNext ? lastPage.page + 1 : undefined,
     placeholderData: keepPreviousData,
+    staleTime: 1000 * 60 * 7,
+    refetchInterval: 1000 * 60 * 7,
   });
   const comments = data?.pages.flatMap((page) => page.records) ?? [];
   const isRefreshingSort = isFetching && !isFetchingNextPage && comments.length > 0;
