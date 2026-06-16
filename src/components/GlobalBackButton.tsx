@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import styles from "./GlobalBackButton.module.scss";
 
-const rootPaths = new Set(["/ranking", "/profile", "/login"]);
+const rootPaths = new Set(["/articles", "/ranking", "/profile", "/login"]);
 
 export function GlobalBackButton() {
   const location = useLocation();

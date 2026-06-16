@@ -5,6 +5,7 @@ import { LazyRoute } from "@/router/LazyRoute";
 import { ProtectedRoute } from "@/router/ProtectedRoute";
 import { PublicOnlyRoute } from "@/router/PublicOnlyRoute";
 import {
+  ArticleView,
   LoginView,
   ProfileView,
   RankingView,
@@ -18,7 +19,15 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="/ranking" replace />,
+        element: <Navigate to="/articles" replace />,
+      },
+      {
+        path: "articles",
+        element: (
+          <LazyRoute>
+            <ArticleView />
+          </LazyRoute>
+        ),
       },
       {
         path: "ranking",

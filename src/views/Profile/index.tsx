@@ -25,6 +25,7 @@ function ProfileView() {
     },
     enabled: Boolean(user),
     staleTime: Number.POSITIVE_INFINITY,
+    gcTime: Number.POSITIVE_INFINITY,
     refetchOnWindowFocus: false,
   });
 
