@@ -5,7 +5,10 @@ import { ChevronDown } from "lucide-react";
 import { getRankList } from "@/api";
 import type { SubjectType } from "@/api/request";
 import { RankingCard } from "./components/RankingCard";
+import { RankingPagination } from "./components/RankingPagination";
 import styles from "./index.module.scss";
+
+const PAGE_SIZE = 15;
 
 const SUBJECT_TYPE_OPTIONS: Array<{ label: string; value: SubjectType }> = [
   { label: "动画", value: "ANIME" },
@@ -26,8 +29,9 @@ const META_TAG_OPTIONS: Record<SubjectType, string[]> = {
 type OpenMenu = "category" | "metaTag" | null;
 
 function RankingView() {
-  const [subjectType, setSubjectType] = useState<SubjectType>("ANIME");
-  const [metaTag, setMetaTag] = useState<string>();
+  const [subjectType, setSubjectType] = useState<SubjectType>("GAME");
+  const [metaTag, setMetaTag] = useState<string | undefined>("Galgame");
+  const [page, setPage] = useState(1);
   const [openMenu, setOpenMenu] = useState<OpenMenu>(null);
 
   const subjectTypeLabel =
@@ -38,28 +42,36 @@ function RankingView() {
   function handleSubjectTypeChange(nextSubjectType: SubjectType) {
     setSubjectType(nextSubjectType);
     setMetaTag(undefined);
+    setPage(1);
+    setOpenMenu(null);
+  }
+
+  function handleMetaTagChange(nextMetaTag?: string) {
+    setMetaTag(nextMetaTag);
+    setPage(1);
     setOpenMenu(null);
   }
 
   const {
-    data: list = [],
+    data,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["ranking", subjectType, metaTag ?? "all", 1, 20],
+    queryKey: ["ranking", subjectType, metaTag ?? "all", page, PAGE_SIZE],
     queryFn: async () => {
-      const data = await getRankList({
-        page: 1,
-        size: 20,
+      return getRankList({
+        page,
+        size: PAGE_SIZE,
         type: subjectType,
         metaTag,
       });
-
-      return data.records;
     },
     staleTime: 1000 * 60 * 15,
     refetchInterval: 1000 * 60 * 15,
   });
+  const list = data?.records ?? [];
+  const hasPrevious = data?.hasPrevious ?? page > 1;
+  const hasNext = data?.hasNext ?? false;
 
   return (
     <main className={styles.page}>
@@ -116,10 +128,7 @@ function RankingView() {
                 className={!metaTag ? styles.menuItemActive : styles.menuItem}
                 role="menuitemradio"
                 aria-checked={!metaTag}
-                onClick={() => {
-                  setMetaTag(undefined);
-                  setOpenMenu(null);
-                }}
+                onClick={() => handleMetaTagChange()}
               >
                 全部类型
               </button>
@@ -130,10 +139,7 @@ function RankingView() {
                   className={option === metaTag ? styles.menuItemActive : styles.menuItem}
                   role="menuitemradio"
                   aria-checked={option === metaTag}
-                  onClick={() => {
-                    setMetaTag(option);
-                    setOpenMenu(null);
-                  }}
+                  onClick={() => handleMetaTagChange(option)}
                 >
                   {option}
                 </button>
@@ -156,6 +162,13 @@ function RankingView() {
           />
         ))}
       </div>
+      <RankingPagination
+        page={page}
+        hasPrevious={hasPrevious}
+        hasNext={hasNext}
+        onPrevious={() => setPage((current) => Math.max(current - 1, 1))}
+        onNext={() => setPage((current) => current + 1)}
+      />
     </main>
   );
 }
