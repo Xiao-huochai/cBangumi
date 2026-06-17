@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "deploy": "pnpm build && rsync -av --delete dist/ root@47.109.93.18:/opt/cbangumi/frontend/dist/",
     "lint": "eslint .",
     "preview": "vite preview"
   },

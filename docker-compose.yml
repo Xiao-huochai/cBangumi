@@ -1,0 +1,12 @@
+services:
+  cbangumi-web:
+    build: .
+    image: cbangumi-web:latest
+    container_name: cbangumi-web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      API_PROXY_PASS: http://host.docker.internal:8080
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

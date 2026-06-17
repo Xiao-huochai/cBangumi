@@ -24,6 +24,7 @@ export interface GetRankListParams {
   page?: number;
   size?: number;
   type?: SubjectType;
+  metaTag?: string;
 }
 
 export function getRankList(params: GetRankListParams = {}) {
@@ -31,6 +32,7 @@ export function getRankList(params: GetRankListParams = {}) {
     page: params.page ?? 1,
     size: params.size ?? 20,
     type: params.type,
+    metaTag: params.metaTag,
   });
 }
 
