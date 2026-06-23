@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Flame } from "lucide-react";
 
 import { getRankList } from "@/api";
-import type { SubjectType } from "@/api/request";
+import type { SubjectSort, SubjectType } from "@/api/request";
 import { RankingCard } from "./components/RankingCard";
 import { RankingPagination } from "./components/RankingPagination";
 import styles from "./index.module.scss";
@@ -27,14 +27,21 @@ const META_TAG_OPTIONS: Record<SubjectType, string[]> = {
 };
 
 type OpenMenu = "category" | "metaTag" | null;
+type RankingSort = Extract<SubjectSort, "SITE_RANK" | "FAVORITE_TOTAL">;
 
-function getRankingQueryKey(subjectType: SubjectType, metaTag: string | undefined, page: number) {
-  return ["ranking", subjectType, metaTag ?? "all", page, PAGE_SIZE] as const;
+function getRankingQueryKey(
+  subjectType: SubjectType,
+  metaTag: string | undefined,
+  sort: RankingSort,
+  page: number,
+) {
+  return ["ranking", subjectType, metaTag ?? "all", sort, page, PAGE_SIZE] as const;
 }
 
 function getRankingQueryFn(
   subjectType: SubjectType,
   metaTag: string | undefined,
+  sort: RankingSort,
   page: number,
 ) {
   return () =>
@@ -43,6 +50,8 @@ function getRankingQueryFn(
       size: PAGE_SIZE,
       type: subjectType,
       metaTag,
+      sort,
+      order: "DESC",
     });
 }
 
@@ -50,6 +59,7 @@ function RankingView() {
   const queryClient = useQueryClient();
   const [subjectType, setSubjectType] = useState<SubjectType>("GAME");
   const [metaTag, setMetaTag] = useState<string | undefined>("Galgame");
+  const [sort, setSort] = useState<RankingSort>("SITE_RANK");
   const [page, setPage] = useState(1);
   const [openMenu, setOpenMenu] = useState<OpenMenu>(null);
 
@@ -71,13 +81,19 @@ function RankingView() {
     setOpenMenu(null);
   }
 
+  function handleHotSortClick() {
+    setSort((current) => (current === "FAVORITE_TOTAL" ? "SITE_RANK" : "FAVORITE_TOTAL"));
+    setPage(1);
+    setOpenMenu(null);
+  }
+
   const {
     data,
     isLoading,
     error,
   } = useQuery({
-    queryKey: getRankingQueryKey(subjectType, metaTag, page),
-    queryFn: getRankingQueryFn(subjectType, metaTag, page),
+    queryKey: getRankingQueryKey(subjectType, metaTag, sort, page),
+    queryFn: getRankingQueryFn(subjectType, metaTag, sort, page),
     staleTime: 1000 * 60 * 15,
     refetchInterval: 1000 * 60 * 15,
   });
@@ -94,12 +110,12 @@ function RankingView() {
 
     for (let nextPage = page + 1; nextPage <= maxPrefetchPage; nextPage += 1) {
       queryClient.prefetchQuery({
-        queryKey: getRankingQueryKey(subjectType, metaTag, nextPage),
-        queryFn: getRankingQueryFn(subjectType, metaTag, nextPage),
+        queryKey: getRankingQueryKey(subjectType, metaTag, sort, nextPage),
+        queryFn: getRankingQueryFn(subjectType, metaTag, sort, nextPage),
         staleTime: 1000 * 60 * 15,
       });
     }
-  }, [data?.hasNext, data?.pages, metaTag, page, queryClient, subjectType]);
+  }, [data?.hasNext, data?.pages, metaTag, page, queryClient, sort, subjectType]);
 
   return (
     <main className={styles.page}>
@@ -175,6 +191,18 @@ function RankingView() {
             </div>
           )}
         </div>
+
+        <button
+          type="button"
+          className={
+            sort === "FAVORITE_TOTAL" ? styles.sortButtonActive : styles.sortButton
+          }
+          aria-pressed={sort === "FAVORITE_TOTAL"}
+          onClick={handleHotSortClick}
+        >
+          <Flame size={16} aria-hidden="true" />
+          <span>热度排序</span>
+        </button>
       </div>
       {isLoading && <div>加载中...</div>}
       {error && <div>{error.message}</div>}

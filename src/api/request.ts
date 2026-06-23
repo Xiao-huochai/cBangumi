@@ -3,6 +3,17 @@ import { api } from "@/api/client";
 import type { PageResult } from "@/types";
 
 export type SubjectType = "BOOK" | "ANIME" | "MUSIC" | "GAME" | "REAL";
+export type SubjectSort =
+  | "CREATED_AT"
+  | "DATE"
+  | "SCORE"
+  | "RANK"
+  | "SITE_SCORE"
+  | "SITE_RANK"
+  | "FAVORITE_DONE"
+  | "FAVORITE_TOTAL"
+  | "ID";
+export type SortOrder = "ASC" | "DESC";
 
 export interface RankItem {
   id: number;
@@ -25,6 +36,8 @@ export interface GetRankListParams {
   size?: number;
   type?: SubjectType;
   metaTag?: string;
+  sort?: SubjectSort;
+  order?: SortOrder;
 }
 
 export function getRankList(params: GetRankListParams = {}) {
@@ -33,6 +46,8 @@ export function getRankList(params: GetRankListParams = {}) {
     size: params.size ?? 20,
     type: params.type,
     metaTag: params.metaTag,
+    sort: params.sort,
+    order: params.order,
   });
 }
 
