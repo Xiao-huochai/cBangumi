@@ -1,3 +1,5 @@
+import { PageNavBar } from "@/components/PageNavBar";
+
 import { SearchControls } from "./components/SearchControls";
 import { SearchResults } from "./components/SearchResults";
 import { useSubjectSearch } from "./hooks/useSubjectSearch";
@@ -24,7 +26,7 @@ function SearchView() {
 
   return (
     <main className={styles.page}>
-      <h1>搜索</h1>
+      <PageNavBar showBackButton title="搜索" />
       <SearchControls
         keyword={keywordInput}
         subjectType={subjectType}

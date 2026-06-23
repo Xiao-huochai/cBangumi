@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { updateUserPassword } from "@/api";
+import { PageNavBar } from "@/components/PageNavBar";
 import { useAuthStore } from "@/store";
 import { SettingsLogoutButton } from "./components/SettingsLogoutButton";
 import styles from "./index.module.scss";
@@ -63,9 +64,7 @@ function SettingsView() {
 
   return (
     <main className={styles.page}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>设置</h1>
-      </header>
+      <PageNavBar showBackButton title="设置" />
 
       <section className={styles.section} aria-labelledby="password-title">
         <div className={styles.sectionHeader}>

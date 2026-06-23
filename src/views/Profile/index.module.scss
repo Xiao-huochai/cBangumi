@@ -3,12 +3,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 0px 16px 96px;
-
-  .header {
-    align-self: flex-end;
-    display: flex;
-  }
+  padding: calc(72px + env(safe-area-inset-top)) 16px 96px;
 
   .section {
     display: flex;

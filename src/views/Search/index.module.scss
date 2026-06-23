@@ -1,12 +1,7 @@
 @use "@/styles/breakpoints" as *;
 
 .page {
-  padding: 20px 12px 88px;
-
-  h1 {
-    margin: 0 0 16px;
-    font-size: clamp(20px, 2.4vw, 28px);
-  }
+  padding: calc(72px + env(safe-area-inset-top)) 12px 88px;
 }
 
 @include tablet {

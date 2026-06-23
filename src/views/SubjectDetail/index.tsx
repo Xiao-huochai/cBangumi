@@ -1,5 +1,7 @@
 import { useParams } from "react-router-dom";
 
+import { PageNavBar } from "@/components/PageNavBar";
+
 import SubjectCollectionSection from "./components/SubjectCollectionSection";
 import SubjectCollectionModal from "./components/SubjectCollectionModal";
 import SubjectCommentsSection from "./components/SubjectCommentsSection";
@@ -44,10 +46,13 @@ function SubjectDetailView() {
     invalidSubjectId,
     subjectId: parsedSubjectId,
   });
+  const pageTitle = subject?.nameCn || subject?.name || "条目详情";
   const subjectTitle = subject?.nameCn || subject?.name || "收藏作品";
 
   return (
     <main className={styles.page}>
+      <PageNavBar showBackButton title={pageTitle} />
+
       {invalidSubjectId && <div className={styles.status}>条目不存在</div>}
       {loading && <div className={styles.status}>加载中...</div>}
       {error && <div className={styles.status}>{error}</div>}

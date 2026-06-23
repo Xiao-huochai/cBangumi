@@ -1,7 +1,7 @@
 @use "@/styles/breakpoints" as *;
 
 .page {
-  padding: 20px 16px 88px;
+  padding: calc(72px + env(safe-area-inset-top)) 16px 88px;
 }
 
 .status {

@@ -30,7 +30,14 @@ function getRankingQueryKey(
   sort: RankingSort,
   page: number,
 ) {
-  return ["ranking", subjectType, metaTag ?? "all", sort, page, PAGE_SIZE] as const;
+  return [
+    "ranking",
+    subjectType,
+    metaTag ?? "all",
+    sort,
+    page,
+    PAGE_SIZE,
+  ] as const;
 }
 
 function getRankingQueryFn(
@@ -59,7 +66,8 @@ function RankingView() {
   const [openMenu, setOpenMenu] = useState<OpenMenu>(null);
 
   const subjectTypeLabel =
-    SUBJECT_TYPE_OPTIONS.find((option) => option.value === subjectType)?.label ?? "分类";
+    SUBJECT_TYPE_OPTIONS.find((option) => option.value === subjectType)
+      ?.label ?? "分类";
   const metaTagOptions = META_TAG_OPTIONS[subjectType];
   const metaTagLabel = metaTag ?? "全部类型";
 
@@ -77,16 +85,14 @@ function RankingView() {
   }
 
   function handleHotSortClick() {
-    setSort((current) => (current === "FAVORITE_TOTAL" ? "SITE_RANK" : "FAVORITE_TOTAL"));
+    setSort((current) =>
+      current === "FAVORITE_TOTAL" ? "SITE_RANK" : "FAVORITE_TOTAL",
+    );
     setPage(1);
     setOpenMenu(null);
   }
 
-  const {
-    data,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: getRankingQueryKey(subjectType, metaTag, sort, page),
     queryFn: getRankingQueryFn(subjectType, metaTag, sort, page),
     staleTime: 1000 * 60 * 15,
@@ -101,7 +107,8 @@ function RankingView() {
       return;
     }
 
-    const maxPrefetchPage = data.pages > 0 ? Math.min(page + 2, data.pages) : page + 2;
+    const maxPrefetchPage =
+      data.pages > 0 ? Math.min(page + 2, data.pages) : page + 2;
 
     for (let nextPage = page + 1; nextPage <= maxPrefetchPage; nextPage += 1) {
       queryClient.prefetchQuery({
@@ -110,7 +117,15 @@ function RankingView() {
         staleTime: 1000 * 60 * 15,
       });
     }
-  }, [data?.hasNext, data?.pages, metaTag, page, queryClient, sort, subjectType]);
+  }, [
+    data?.hasNext,
+    data?.pages,
+    metaTag,
+    page,
+    queryClient,
+    sort,
+    subjectType,
+  ]);
 
   return (
     <main className={styles.page}>
@@ -118,7 +133,11 @@ function RankingView() {
         className={styles.navBar}
         title="排行榜"
         right={
-          <Link className={styles.searchLink} to="/search" aria-label="搜索条目">
+          <Link
+            className={styles.searchLink}
+            to="/search"
+            aria-label="搜索条目"
+          >
             <Search size={20} aria-hidden="true" />
           </Link>
         }
@@ -131,7 +150,9 @@ function RankingView() {
             className={styles.filterButton}
             aria-expanded={openMenu === "category"}
             onClick={() =>
-              setOpenMenu((current) => (current === "category" ? null : "category"))
+              setOpenMenu((current) =>
+                current === "category" ? null : "category",
+              )
             }
           >
             <span>{subjectTypeLabel}</span>
@@ -144,7 +165,9 @@ function RankingView() {
                   key={option.value}
                   type="button"
                   className={
-                    option.value === subjectType ? styles.menuItemActive : styles.menuItem
+                    option.value === subjectType
+                      ? styles.menuItemActive
+                      : styles.menuItem
                   }
                   role="menuitemradio"
                   aria-checked={option.value === subjectType}
@@ -163,7 +186,9 @@ function RankingView() {
             className={styles.filterButton}
             aria-expanded={openMenu === "metaTag"}
             onClick={() =>
-              setOpenMenu((current) => (current === "metaTag" ? null : "metaTag"))
+              setOpenMenu((current) =>
+                current === "metaTag" ? null : "metaTag",
+              )
             }
           >
             <span>{metaTagLabel}</span>
@@ -184,7 +209,9 @@ function RankingView() {
                 <button
                   key={option}
                   type="button"
-                  className={option === metaTag ? styles.menuItemActive : styles.menuItem}
+                  className={
+                    option === metaTag ? styles.menuItemActive : styles.menuItem
+                  }
                   role="menuitemradio"
                   aria-checked={option === metaTag}
                   onClick={() => handleMetaTagChange(option)}
@@ -199,7 +226,9 @@ function RankingView() {
         <button
           type="button"
           className={
-            sort === "FAVORITE_TOTAL" ? styles.sortButtonActive : styles.sortButton
+            sort === "FAVORITE_TOTAL"
+              ? styles.sortButtonActive
+              : styles.sortButton
           }
           aria-pressed={sort === "FAVORITE_TOTAL"}
           onClick={handleHotSortClick}

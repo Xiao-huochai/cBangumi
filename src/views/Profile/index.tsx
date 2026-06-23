@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { getMyCollections } from "@/api";
+import { PageNavBar } from "@/components/PageNavBar";
 import type { SubjectType } from "@/api/request";
 import { SUBJECT_TYPE_OPTIONS } from "@/constants/subjects";
 import { useAuthStore } from "@/store";
@@ -43,9 +44,7 @@ function ProfileView() {
 
   return (
     <main className={styles.page}>
-      <header className={styles.header}>
-        <ProfileSettingsLink />
-      </header>
+      <PageNavBar title="个人中心" right={<ProfileSettingsLink />} />
 
       <UserCard name={user.name} avatarId={user.avatarId} />
 
