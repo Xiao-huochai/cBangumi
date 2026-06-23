@@ -1,15 +1,26 @@
 import { ArrowLeft } from "lucide-react";
+import type { ReactNode } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import styles from "./GlobalBackButton.module.scss";
 
 const rootPaths = new Set(["/articles", "/ranking", "/profile", "/login"]);
 
-export function GlobalBackButton() {
+type GlobalBackButtonProps = {
+  title?: ReactNode;
+  right?: ReactNode;
+  hidden?: boolean;
+};
+
+export function GlobalBackButton({
+  title,
+  right,
+  hidden = false,
+}: GlobalBackButtonProps) {
   const location = useLocation();
   const navigate = useNavigate();
 
-  if (rootPaths.has(location.pathname)) {
+  if (hidden || rootPaths.has(location.pathname)) {
     return null;
   }
 
@@ -24,14 +35,20 @@ export function GlobalBackButton() {
 
   return (
     <div className={styles.bar}>
-      <button
-        type="button"
-        className={styles.button}
-        onClick={handleBack}
-        aria-label="返回上级"
-      >
-        <ArrowLeft className={styles.icon} aria-hidden="true" />
-      </button>
+      <div className={styles.left}>
+        <button
+          type="button"
+          className={styles.button}
+          onClick={handleBack}
+          aria-label="返回上级"
+        >
+          <ArrowLeft className={styles.icon} aria-hidden="true" />
+        </button>
+      </div>
+
+      <div className={styles.center}>{title}</div>
+
+      <div className={styles.right}>{right}</div>
     </div>
   );
 }

@@ -4,20 +4,13 @@ import { Link } from "react-router-dom";
 import { ChevronDown, Flame, Search } from "lucide-react";
 
 import { getRankList } from "@/api";
+import { SUBJECT_TYPE_OPTIONS } from "@/constants/subjects";
 import type { SubjectSort, SubjectType } from "@/api/request";
 import { RankingCard } from "./components/RankingCard";
 import { RankingPagination } from "./components/RankingPagination";
 import styles from "./index.module.scss";
 
 const PAGE_SIZE = 15;
-
-const SUBJECT_TYPE_OPTIONS: Array<{ label: string; value: SubjectType }> = [
-  { label: "动画", value: "ANIME" },
-  { label: "书籍", value: "BOOK" },
-  { label: "音乐", value: "MUSIC" },
-  { label: "游戏", value: "GAME" },
-  { label: "三次元", value: "REAL" },
-];
 
 const META_TAG_OPTIONS: Record<SubjectType, string[]> = {
   ANIME: ["TV", "WEB", "OVA", "剧场版"],

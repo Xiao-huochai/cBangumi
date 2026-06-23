@@ -4,9 +4,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useAuthStore } from "@/store";
-import styles from "./ProfileLogoutButton.module.scss";
+import styles from "./SettingsLogoutButton.module.scss";
 
-export function ProfileLogoutButton() {
+export function SettingsLogoutButton() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const signOut = useAuthStore((state) => state.signOut);
@@ -30,11 +30,9 @@ export function ProfileLogoutButton() {
       className={styles.button}
       onClick={() => void handleSignOut()}
       disabled={signingOut}
-      aria-label="退出登录"
-      title="退出登录"
     >
       <LogOut aria-hidden="true" />
-      <span>{signingOut ? "退出中" : ""}</span>
+      <span>{signingOut ? "退出中..." : "退出登录"}</span>
     </button>
   );
 }

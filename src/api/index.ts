@@ -10,7 +10,12 @@ export { createArticle, getArticleList, uploadArticleImage } from "./articles";
 export { getCurrentUser, login, logout } from "./auth";
 export type { CommentItem, GetSubjectCommentsParams, SubjectCommentSort } from "./comments";
 export { getSubjectComments, likeComment, unlikeComment } from "./comments";
-export type { CollectionStatus, SubjectState, UpdateSubjectStatePayload } from "./profile";
+export type {
+  CollectionStatus,
+  SubjectState,
+  UpdateSubjectStatePayload,
+  UpdateUserPasswordPayload,
+} from "./profile";
 export {
   getAvatarOptions,
   getMyCollections,
@@ -25,6 +30,7 @@ export {
   getUserRatings,
   updateMySubjectState,
   updateMyAvatar,
+  updateUserPassword,
 } from "./profile";
 export type { SearchMode, SearchSubjectsParams, SubjectSearchItem } from "./request";
 export { getRankList, getSubjectDetail, searchSubjects } from "./request";

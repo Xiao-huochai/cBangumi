@@ -3,11 +3,11 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 24px 16px 96px;
+  padding: 0px 16px 96px;
 
   .header {
+    align-self: flex-end;
     display: flex;
-    justify-content: flex-end;
   }
 
   .section {
@@ -32,6 +32,43 @@
         color: #64748b;
         font-size: 0.875rem;
       }
+    }
+
+    .categoryTabs {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .categoryTab,
+    .categoryTabActive {
+      min-width: 0;
+      min-height: 38px;
+      padding: 9px 8px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      line-height: 1;
+      transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background-color 0.2s ease;
+    }
+
+    .categoryTab {
+      background: #ffffff;
+      color: #0f172a;
+
+      &:hover {
+        border-color: pink;
+      }
+    }
+
+    .categoryTabActive {
+      border-color: pink;
+      background: pink;
+      color: #ffffff;
     }
 
     .list {

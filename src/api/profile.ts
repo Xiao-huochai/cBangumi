@@ -30,6 +30,10 @@ export interface UpdateMyAvatarPayload {
   avatarId: string;
 }
 
+export interface UpdateUserPasswordPayload {
+  password: string;
+}
+
 export interface UserCollectionItem {
   id: number;
   userId: number;
@@ -133,6 +137,13 @@ export function getAvatarOptions() {
 
 export function updateMyAvatar(data: UpdateMyAvatarPayload) {
   return api.put<UserProfile>("/api/users/me/avatar", data);
+}
+
+export function updateUserPassword(
+  userId: number,
+  data: UpdateUserPasswordPayload,
+) {
+  return api.put<UserProfile>(`/api/users/${userId}`, data);
 }
 
 export function getUserCollections(
