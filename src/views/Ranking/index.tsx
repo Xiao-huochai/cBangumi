@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronDown } from "lucide-react";
 
 import { getRankList } from "@/api";
@@ -28,7 +28,26 @@ const META_TAG_OPTIONS: Record<SubjectType, string[]> = {
 
 type OpenMenu = "category" | "metaTag" | null;
 
+function getRankingQueryKey(subjectType: SubjectType, metaTag: string | undefined, page: number) {
+  return ["ranking", subjectType, metaTag ?? "all", page, PAGE_SIZE] as const;
+}
+
+function getRankingQueryFn(
+  subjectType: SubjectType,
+  metaTag: string | undefined,
+  page: number,
+) {
+  return () =>
+    getRankList({
+      page,
+      size: PAGE_SIZE,
+      type: subjectType,
+      metaTag,
+    });
+}
+
 function RankingView() {
+  const queryClient = useQueryClient();
   const [subjectType, setSubjectType] = useState<SubjectType>("GAME");
   const [metaTag, setMetaTag] = useState<string | undefined>("Galgame");
   const [page, setPage] = useState(1);
@@ -57,21 +76,30 @@ function RankingView() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["ranking", subjectType, metaTag ?? "all", page, PAGE_SIZE],
-    queryFn: async () => {
-      return getRankList({
-        page,
-        size: PAGE_SIZE,
-        type: subjectType,
-        metaTag,
-      });
-    },
+    queryKey: getRankingQueryKey(subjectType, metaTag, page),
+    queryFn: getRankingQueryFn(subjectType, metaTag, page),
     staleTime: 1000 * 60 * 15,
     refetchInterval: 1000 * 60 * 15,
   });
   const list = data?.records ?? [];
   const hasPrevious = data?.hasPrevious ?? page > 1;
   const hasNext = data?.hasNext ?? false;
+
+  useEffect(() => {
+    if (!data?.hasNext) {
+      return;
+    }
+
+    const maxPrefetchPage = data.pages > 0 ? Math.min(page + 2, data.pages) : page + 2;
+
+    for (let nextPage = page + 1; nextPage <= maxPrefetchPage; nextPage += 1) {
+      queryClient.prefetchQuery({
+        queryKey: getRankingQueryKey(subjectType, metaTag, nextPage),
+        queryFn: getRankingQueryFn(subjectType, metaTag, nextPage),
+        staleTime: 1000 * 60 * 15,
+      });
+    }
+  }, [data?.hasNext, data?.pages, metaTag, page, queryClient, subjectType]);
 
   return (
     <main className={styles.page}>
