@@ -1,13 +1,9 @@
 .bar {
-  position: sticky;
-  top: 0;
-  z-index: 20;
   display: grid;
   grid-template-columns: minmax(40px, 1fr) minmax(0, auto) minmax(40px, 1fr);
   align-items: center;
-  min-height: calc(56px + env(safe-area-inset-top));
-  padding: calc(8px + env(safe-area-inset-top)) 16px 8px;
-  background: #f7f8fa;
+  min-height: 56px;
+  padding: 8px 16px;
 }
 
 .left,
@@ -34,19 +30,4 @@
 
 .right {
   justify-content: flex-end;
-}
-
-.button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-  width: 40px;
-  color: #111827;
-}
-
-.icon {
-  width: 18px;
-  height: 18px;
-  flex: none;
 }

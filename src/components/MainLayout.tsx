@@ -1,11 +1,5 @@
-import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 
-import { GlobalBackButton } from "./GlobalBackButton";
-import type {
-  GlobalBackButtonConfig,
-  MainLayoutOutletContext,
-} from "./GlobalBackButtonContext";
 import styles from "./MainLayout.module.scss";
 
 const navItems = [
@@ -15,18 +9,10 @@ const navItems = [
 ];
 
 export function MainLayout() {
-  const [globalBackButton, setGlobalBackButton] =
-    useState<GlobalBackButtonConfig>({});
-
   return (
     <div className={styles.layout}>
       <div className={styles.content}>
-        <GlobalBackButton {...globalBackButton} />
-        <Outlet
-          context={
-            { setGlobalBackButton } satisfies MainLayoutOutletContext
-          }
-        />
+        <Outlet />
       </div>
 
       <nav className={styles.nav} aria-label="底部导航">
