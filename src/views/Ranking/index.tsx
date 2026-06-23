@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { ChevronDown, Flame, Search } from "lucide-react";
 
 import { getRankList } from "@/api";
+import { PageNavBar } from "@/components/PageNavBar";
 import { SUBJECT_TYPE_OPTIONS } from "@/constants/subjects";
 import type { SubjectSort, SubjectType } from "@/api/request";
 import { RankingCard } from "./components/RankingCard";
@@ -113,12 +114,15 @@ function RankingView() {
 
   return (
     <main className={styles.page}>
-      <div className={styles.header}>
-        <h1>排行榜</h1>
-        <Link className={styles.searchLink} to="/search" aria-label="搜索条目">
-          <Search size={20} aria-hidden="true" />
-        </Link>
-      </div>
+      <PageNavBar
+        className={styles.navBar}
+        title="排行榜"
+        right={
+          <Link className={styles.searchLink} to="/search" aria-label="搜索条目">
+            <Search size={20} aria-hidden="true" />
+          </Link>
+        }
+      />
 
       <div className={styles.filters}>
         <div className={styles.filterMenu}>
