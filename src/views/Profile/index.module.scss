@@ -5,6 +5,11 @@
   gap: 20px;
   padding: 24px 16px 96px;
 
+  .header {
+    display: flex;
+    justify-content: flex-end;
+  }
+
   .section {
     display: flex;
     flex-direction: column;

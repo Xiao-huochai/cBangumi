@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getMyCollections } from "@/api";
 import { useAuthStore } from "@/store";
 import { CollectionCard } from "./components/CollectionCard";
+import { ProfileLogoutButton } from "./components/ProfileLogoutButton";
 import { UserCard } from "./components/UserCard";
 import styles from "./index.module.scss";
 
@@ -35,6 +36,10 @@ function ProfileView() {
 
   return (
     <main className={styles.page}>
+      <header className={styles.header}>
+        <ProfileLogoutButton />
+      </header>
+
       <UserCard name={user.name} avatarId={user.avatarId} />
 
       <section className={styles.section}>
