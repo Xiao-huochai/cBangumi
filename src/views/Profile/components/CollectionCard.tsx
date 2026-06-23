@@ -15,19 +15,19 @@ interface CollectionCardProps {
   commentContent?: string | null;
 }
 
-const statusLabelMap: Record<CollectionStatus, string> = {
-  WISH: "想看",
-  DOING: "在看",
-  DONE: "看过",
-  ON_HOLD: "搁置",
-  DROPPED: "抛弃",
-};
+// const statusLabelMap: Record<CollectionStatus, string> = {
+//   WISH: "想看",
+//   DOING: "在看",
+//   DONE: "看过",
+//   ON_HOLD: "搁置",
+//   DROPPED: "抛弃",
+// };
 
 export function CollectionCard({
   subjectId,
   subjectTitle,
   coverUrl,
-  status,
+  // status,
   ratingScore,
   commentContent,
 }: CollectionCardProps) {
@@ -40,7 +40,7 @@ export function CollectionCard({
       <div className={styles.content}>
         <div className={styles.header}>
           <h2 className={styles.title}>{subjectTitle}</h2>
-          <span className={styles.status}>{statusLabelMap[status]}</span>
+          {/* <span className={styles.status}>{statusLabelMap[status]}</span> */}
         </div>
 
         {ratingScore ? (
