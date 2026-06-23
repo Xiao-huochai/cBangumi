@@ -11,6 +11,7 @@ import {
   LoginView,
   ProfileView,
   RankingView,
+  SearchView,
   SubjectDetailView,
 } from "@/router/lazyViews";
 
@@ -36,6 +37,14 @@ export const router = createBrowserRouter([
         element: (
           <LazyRoute>
             <RankingView />
+          </LazyRoute>
+        ),
+      },
+      {
+        path: "search",
+        element: (
+          <LazyRoute>
+            <SearchView />
           </LazyRoute>
         ),
       },

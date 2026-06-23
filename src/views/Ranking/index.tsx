@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ChevronDown, Flame } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ChevronDown, Flame, Search } from "lucide-react";
 
 import { getRankList } from "@/api";
 import type { SubjectSort, SubjectType } from "@/api/request";
@@ -119,7 +120,13 @@ function RankingView() {
 
   return (
     <main className={styles.page}>
-      <h1>排行榜</h1>
+      <div className={styles.header}>
+        <h1>排行榜</h1>
+        <Link className={styles.searchLink} to="/search" aria-label="搜索条目">
+          <Search size={20} aria-hidden="true" />
+        </Link>
+      </div>
+
       <div className={styles.filters}>
         <div className={styles.filterMenu}>
           <button
@@ -204,6 +211,7 @@ function RankingView() {
           <span>热度排序</span>
         </button>
       </div>
+
       {isLoading && <div>加载中...</div>}
       {error && <div>{error.message}</div>}
       <div className={styles.grid}>

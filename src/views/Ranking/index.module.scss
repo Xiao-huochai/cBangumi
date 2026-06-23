@@ -2,10 +2,41 @@
 
 .page {
   padding: 20px 12px 88px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
 
   h1 {
-    margin: 0 0 16px;
+    margin: 0;
     font-size: clamp(20px, 2.4vw, 28px);
+  }
+}
+
+.searchLink {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgb(230, 230, 230);
+  border-radius: 8px;
+  color: #111111;
+  background: #ffffff;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+
+  &:hover {
+    border-color: pink;
+    color: #ffffff;
+    background: pink;
   }
 }
 

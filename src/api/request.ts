@@ -14,6 +14,7 @@ export type SubjectSort =
   | "FAVORITE_TOTAL"
   | "ID";
 export type SortOrder = "ASC" | "DESC";
+export type SearchMode = "FUZZY" | "EXACT";
 
 export interface RankItem {
   id: number;
@@ -48,6 +49,37 @@ export function getRankList(params: GetRankListParams = {}) {
     metaTag: params.metaTag,
     sort: params.sort,
     order: params.order,
+  });
+}
+
+export interface SubjectSearchItem {
+  id: number;
+  type: SubjectType;
+  title?: string;
+  name?: string;
+  nameCn?: string | null;
+  date?: string | null;
+  score?: number | null;
+  rank?: number | null;
+  summary?: string | null;
+  coverUrl: string;
+}
+
+export interface SearchSubjectsParams {
+  keyword: string;
+  type?: SubjectType;
+  mode?: SearchMode;
+  page?: number;
+  size?: number;
+}
+
+export function searchSubjects(params: SearchSubjectsParams) {
+  return api.get<PageResult<SubjectSearchItem>>("/api/search/subjects", {
+    keyword: params.keyword,
+    type: params.type,
+    mode: params.mode ?? "FUZZY",
+    page: params.page ?? 1,
+    size: params.size ?? 20,
   });
 }
 

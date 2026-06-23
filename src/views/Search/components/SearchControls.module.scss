@@ -1,0 +1,120 @@
+.controls {
+  display: block;
+  margin-bottom: 14px;
+  border-radius: 30%;
+}
+
+.searchForm {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) 58px 42px;
+  min-width: 0;
+  border: 1px solid rgb(230, 230, 230);
+  border-radius: 8px;
+  background: #ffffff;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.filterMenu {
+  position: relative;
+}
+
+.categoryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 76px;
+  height: 40px;
+  padding: 0 12px;
+  border: 0;
+  border-right: 1px solid rgb(230, 230, 230);
+  color: #111111;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+
+  &:hover {
+    background: rgb(248, 248, 248);
+  }
+}
+
+.searchInput {
+  min-width: 0;
+  height: 40px;
+  padding: 0 12px;
+  border: 0;
+  color: #111111;
+  font-size: 15px;
+  line-height: 1.2;
+  outline: none;
+}
+
+.searchModeButton,
+.searchButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  border: 0;
+  border-left: 1px solid rgb(230, 230, 230);
+  color: #111111;
+}
+
+.searchModeButton {
+  width: 58px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.searchButton {
+  width: 42px;
+}
+
+.menuList {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 6px);
+  left: 0;
+  display: grid;
+  min-width: 148px;
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 6px;
+  border: 1px solid rgb(235, 235, 235);
+  border-radius: 8px;
+  background: rgb(255, 255, 255);
+  box-shadow: 0 12px 28px rgb(0 0 0 / 12%);
+}
+
+.menuItem,
+.menuItemActive {
+  width: 100%;
+  min-height: 34px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  color: #111111;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.menuItem {
+  background: transparent;
+}
+@media (max-width: 560px) {
+  .searchForm {
+    grid-template-columns: 72px minmax(0, 1fr) 54px 42px;
+  }
+
+  .categoryButton {
+    min-width: 72px;
+  }
+
+  .searchModeButton {
+    width: 54px;
+  }
+}

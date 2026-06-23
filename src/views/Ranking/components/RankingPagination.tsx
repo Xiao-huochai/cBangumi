@@ -6,6 +6,7 @@ interface RankingPaginationProps {
   page: number;
   hasPrevious: boolean;
   hasNext: boolean;
+  ariaLabel?: string;
   onPrevious: () => void;
   onNext: () => void;
 }
@@ -14,11 +15,12 @@ export function RankingPagination({
   page,
   hasPrevious,
   hasNext,
+  ariaLabel = "排行榜分页",
   onPrevious,
   onNext,
 }: RankingPaginationProps) {
   return (
-    <nav className={styles.pagination} aria-label="排行榜分页">
+    <nav className={styles.pagination} aria-label={ariaLabel}>
       <button
         type="button"
         className={styles.pageButton}

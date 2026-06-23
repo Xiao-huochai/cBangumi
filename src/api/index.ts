@@ -26,4 +26,5 @@ export {
   updateMySubjectState,
   updateMyAvatar,
 } from "./profile";
-export { getRankList, getSubjectDetail } from "./request";
+export type { SearchMode, SearchSubjectsParams, SubjectSearchItem } from "./request";
+export { getRankList, getSubjectDetail, searchSubjects } from "./request";
