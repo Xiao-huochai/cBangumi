@@ -4,6 +4,7 @@ export interface AuthUser {
   id: number;
   name: string;
   avatarId: string;
+  isAdmin?: boolean;
   createdAt: string;
   updatedAt: string;
 }

@@ -1,10 +1,12 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import { MainLayout } from "@/components/MainLayout";
+import { AdminRoute } from "@/router/AdminRoute";
 import { LazyRoute } from "@/router/LazyRoute";
 import { ProtectedRoute } from "@/router/ProtectedRoute";
 import { PublicOnlyRoute } from "@/router/PublicOnlyRoute";
 import {
+  ArticleCreateView,
   ArticleView,
   LoginView,
   ProfileView,
@@ -48,6 +50,19 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
+          {
+            element: <AdminRoute />,
+            children: [
+              {
+                path: "articles/new",
+                element: (
+                  <LazyRoute>
+                    <ArticleCreateView />
+                  </LazyRoute>
+                ),
+              },
+            ],
+          },
           {
             path: "profile",
             element: (
