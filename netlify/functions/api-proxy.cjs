@@ -72,6 +72,37 @@ function getResponseHeaders(response) {
   return headers;
 }
 
+function getQueryString(event) {
+  if (event.rawQuery) {
+    return event.rawQuery;
+  }
+
+  const searchParams = new URLSearchParams();
+  const multiValueParams = event.multiValueQueryStringParameters || {};
+
+  for (const [name, values] of Object.entries(multiValueParams)) {
+    for (const value of values || []) {
+      if (value !== undefined && value !== null) {
+        searchParams.append(name, value);
+      }
+    }
+  }
+
+  const singleValueParams = event.queryStringParameters || {};
+
+  for (const [name, value] of Object.entries(singleValueParams)) {
+    if (
+      value !== undefined &&
+      value !== null &&
+      !Object.prototype.hasOwnProperty.call(multiValueParams, name)
+    ) {
+      searchParams.append(name, value);
+    }
+  }
+
+  return searchParams.toString();
+}
+
 exports.handler = async (event) => {
   const apiOrigin = process.env.API_ORIGIN;
 
@@ -82,7 +113,8 @@ exports.handler = async (event) => {
     };
   }
 
-  const query = event.rawQuery ? `?${event.rawQuery}` : "";
+  const queryString = getQueryString(event);
+  const query = queryString ? `?${queryString}` : "";
   const targetUrl = `${normalizeOrigin(apiOrigin)}${getApiPath(event)}${query}`;
   const method = event.httpMethod;
   const hasBody = method !== "GET" && method !== "HEAD" && event.body;
