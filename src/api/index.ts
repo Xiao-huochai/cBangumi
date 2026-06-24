@@ -1,12 +1,25 @@
 export { api, apiClient, ApiError } from "./client";
 export type {
   ArticleCard,
+  ArticleDetail,
   ArticleImageUploadResult,
   ArticleSort,
+  ArticleStatus,
   CreateArticlePayload,
   GetArticleListParams,
+  GetMyArticleListParams,
 } from "./articles";
-export { createArticle, getArticleList, uploadArticleImage } from "./articles";
+export {
+  createArticle,
+  deleteArticle,
+  getArticleDetail,
+  getArticleList,
+  getMyArticleList,
+  hideArticle,
+  publishArticle,
+  updateArticle,
+  uploadArticleImage,
+} from "./articles";
 export { getCurrentUser, login, logout } from "./auth";
 export type { CommentItem, GetSubjectCommentsParams, SubjectCommentSort } from "./comments";
 export { getSubjectComments, likeComment, unlikeComment } from "./comments";

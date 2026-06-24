@@ -62,9 +62,9 @@ function ArticleView() {
       {user?.isAdmin && (
         <Link
           className={styles.createButton}
-          to="/articles/new"
-          aria-label="创建新文章"
-          title="创建新文章"
+          to="/articles/manage"
+          aria-label="文章管理"
+          title="文章管理"
         >
           <SquarePen size={24} aria-hidden="true" />
         </Link>

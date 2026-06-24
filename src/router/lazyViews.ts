@@ -1,6 +1,8 @@
 import { lazy } from "react";
 
 export const ArticleCreateView = lazy(() => import("@/views/ArticleCreate"));
+export const ArticleEditView = lazy(() => import("@/views/ArticleEdit"));
+export const ArticleManageView = lazy(() => import("@/views/ArticleManage"));
 export const ArticleView = lazy(() => import("@/views/Article"));
 export const LoginView = lazy(() => import("@/views/Login"));
 export const ProfileView = lazy(() => import("@/views/Profile"));

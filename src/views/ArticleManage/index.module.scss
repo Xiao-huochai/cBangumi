@@ -1,0 +1,62 @@
+.page {
+  padding: 80px 12px 88px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+
+  h1 {
+    margin: 0;
+    font-size: clamp(20px, 2.4vw, 28px);
+  }
+}
+
+.newButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.newButton {
+  min-height: 38px;
+  padding: 8px 12px;
+  color: #ffffff;
+  background: pink;
+
+  &:hover {
+    background: #f4a6b6;
+  }
+}
+
+.state {
+  padding: 18px 0;
+  color: #667085;
+  font-size: 14px;
+}
+
+.list {
+  display: grid;
+  gap: 0;
+  align-content: start;
+}
+
+@media (min-width: 768px) {
+  .page {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .page {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+}

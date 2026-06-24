@@ -1,0 +1,104 @@
+.row {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.cover {
+  width: 58px;
+  height: 74px;
+  border-radius: 7px;
+  background: #f2f4f7;
+  object-fit: cover;
+}
+
+.content {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+
+  h2 {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    color: #111827;
+    font-size: 16px;
+    line-height: 1.35;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  color: #667085;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.actions {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.iconButton,
+.dangerButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 6px 9px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.iconButton {
+  color: #344054;
+  background: #f9fafb;
+
+  &:hover:not(:disabled) {
+    background: #f2f4f7;
+  }
+
+  &:disabled {
+    opacity: 0.55;
+  }
+}
+
+.dangerButton {
+  color: #b42318;
+  background: #fff1f3;
+
+  &:hover:not(:disabled) {
+    background: #ffe4e8;
+  }
+
+  &:disabled {
+    opacity: 0.55;
+  }
+}
+
+@media (min-width: 768px) {
+  .row {
+    grid-template-columns: 64px minmax(0, 1fr) auto;
+    align-items: center;
+  }
+
+  .cover {
+    width: 64px;
+    height: 82px;
+  }
+
+  .actions {
+    grid-column: auto;
+    justify-content: flex-end;
+  }
+}
