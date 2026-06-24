@@ -103,6 +103,23 @@ function getQueryString(event) {
   return searchParams.toString();
 }
 
+function getResponseBody(response, body, apiOrigin) {
+  const contentType = response.headers.get("content-type") || "";
+
+  if (
+    !contentType.includes("application/json") &&
+    !contentType.startsWith("text/")
+  ) {
+    return body;
+  }
+
+  const rewrittenBody = body
+    .toString("utf8")
+    .replaceAll(normalizeOrigin(apiOrigin), "");
+
+  return Buffer.from(rewrittenBody, "utf8");
+}
+
 exports.handler = async (event) => {
   const apiOrigin = process.env.API_ORIGIN;
 
@@ -127,7 +144,8 @@ exports.handler = async (event) => {
       : undefined,
   });
 
-  const body = Buffer.from(await response.arrayBuffer());
+  const upstreamBody = Buffer.from(await response.arrayBuffer());
+  const body = getResponseBody(response, upstreamBody, apiOrigin);
   const headers = {
     ...getResponseHeaders(response),
     "cache-control": "no-store",
