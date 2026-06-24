@@ -4,6 +4,9 @@
 
 .content {
   min-height: 100vh;
+}
+
+.withBottomNav {
   padding-bottom: 72px;
 }
 
@@ -28,7 +31,7 @@
     font-size: 14px;
 
     &.active {
-      color: #3b82f6;
+      color: #ec4899;
       font-weight: 600;
     }
   }
