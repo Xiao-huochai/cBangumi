@@ -20,6 +20,10 @@ import {
 import { useNavigate } from "react-router-dom";
 
 import { createArticle, uploadArticleImage } from "@/api";
+import {
+  ArticleSubjectPicker,
+  type ArticleSubjectSelection,
+} from "./components/ArticleSubjectPicker";
 
 import styles from "./index.module.scss";
 
@@ -35,6 +39,8 @@ function ArticleCreateView() {
   const [coverName, setCoverName] = useState("");
   const [bodyText, setBodyText] = useState("");
   const [errorText, setErrorText] = useState("");
+  const [selectedSubject, setSelectedSubject] =
+    useState<ArticleSubjectSelection | null>(null);
 
   const editor = useEditor({
     extensions: [
@@ -64,6 +70,7 @@ function ArticleCreateView() {
   const createMutation = useMutation({
     mutationFn: () =>
       createArticle({
+        subjectId: selectedSubject?.subjectId,
         title: title.trim(),
         summary: buildAutoSummary(bodyText),
         coverUrl,
@@ -166,6 +173,12 @@ function ArticleCreateView() {
             maxLength={80}
           />
         </label>
+
+        <ArticleSubjectPicker
+          selectedSubject={selectedSubject}
+          onSelect={setSelectedSubject}
+          onClear={() => setSelectedSubject(null)}
+        />
 
         <label className={styles.uploadField}>
           <span>封面</span>
