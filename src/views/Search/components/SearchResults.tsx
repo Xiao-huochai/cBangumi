@@ -1,35 +1,58 @@
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import { SUBJECT_TYPE_OPTIONS } from "@/constants/subjects";
 import type { SubjectSearchItem } from "@/api";
-import { RankingPagination } from "@/views/Ranking/components/RankingPagination";
 import styles from "./SearchResults.module.scss";
 
 interface SearchResultsProps {
   records: SubjectSearchItem[];
   total: number;
-  page: number;
-  hasPrevious: boolean;
-  hasNext: boolean;
   isLoading: boolean;
+  isFetchingNextPage: boolean;
+  hasNextPage: boolean;
   errorMessage?: string;
   hasSubmittedSearch: boolean;
-  onPrevious: () => void;
-  onNext: () => void;
+  onLoadMore: () => void;
 }
 
 export function SearchResults({
   records,
   total,
-  page,
-  hasPrevious,
-  hasNext,
   isLoading,
+  isFetchingNextPage,
+  hasNextPage,
   errorMessage,
   hasSubmittedSearch,
-  onPrevious,
-  onNext,
+  onLoadMore,
 }: SearchResultsProps) {
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const target = loadMoreRef.current;
+
+    if (!target || !hasSubmittedSearch || !hasNextPage || isLoading || isFetchingNextPage) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          onLoadMore();
+        }
+      },
+      {
+        rootMargin: "240px 0px",
+      },
+    );
+
+    observer.observe(target);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [hasNextPage, hasSubmittedSearch, isFetchingNextPage, isLoading, onLoadMore]);
+
   if (!hasSubmittedSearch) {
     return <div className={styles.state}>输入关键词后点击搜索</div>;
   }
@@ -48,14 +71,13 @@ export function SearchResults({
           <SearchResultRow key={item.id} item={item} />
         ))}
       </div>
-      <RankingPagination
-        page={page}
-        hasPrevious={hasPrevious}
-        hasNext={hasNext}
-        ariaLabel="搜索结果分页"
-        onPrevious={onPrevious}
-        onNext={onNext}
-      />
+      {!isLoading && !errorMessage && records.length > 0 && (
+        <div ref={loadMoreRef} className={styles.loadMoreStatus}>
+          {isFetchingNextPage && "加载更多中..."}
+          {!isFetchingNextPage && hasNextPage && "继续下滑加载更多"}
+          {!isFetchingNextPage && !hasNextPage && "已加载全部结果"}
+        </div>
+      )}
     </>
   );
 }

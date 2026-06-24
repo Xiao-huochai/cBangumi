@@ -31,7 +31,9 @@ export function SettingsLogoutButton() {
       onClick={() => void handleSignOut()}
       disabled={signingOut}
     >
-      <LogOut aria-hidden="true" />
+      <span className={styles.iconBox}>
+        <LogOut aria-hidden="true" />
+      </span>
       <span>{signingOut ? "退出中..." : "退出登录"}</span>
     </button>
   );

@@ -31,6 +31,7 @@ export interface UpdateMyAvatarPayload {
 }
 
 export interface UpdateUserPasswordPayload {
+  oldPassword: string;
   password: string;
 }
 

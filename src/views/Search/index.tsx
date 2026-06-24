@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+
 import { PageNavBar } from "@/components/PageNavBar";
 
 import { SearchControls } from "./components/SearchControls";
@@ -13,16 +15,27 @@ function SearchView() {
     setSubjectType,
     searchMode,
     setSearchMode,
-    page,
-    setPage,
     submittedSearch,
     submitSearch,
     query,
   } = useSubjectSearch();
 
-  const records = query.data?.records ?? [];
-  const hasPrevious = query.data?.hasPrevious ?? page > 1;
-  const hasNext = query.data?.hasNext ?? false;
+  const records = query.data?.pages.flatMap((page) => page.records) ?? [];
+  const total = query.data?.pages[0]?.total ?? 0;
+  const {
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = query;
+  const handleLoadMore = useCallback(() => {
+    if (!hasNextPage || isFetchingNextPage) {
+      return;
+    }
+
+    void fetchNextPage();
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   return (
     <main className={styles.page}>
@@ -38,15 +51,13 @@ function SearchView() {
       />
       <SearchResults
         records={records}
-        total={query.data?.total ?? 0}
-        page={page}
-        hasPrevious={hasPrevious}
-        hasNext={hasNext}
-        isLoading={query.isLoading}
-        errorMessage={query.error?.message}
+        total={total}
+        isLoading={isLoading}
+        isFetchingNextPage={isFetchingNextPage}
+        hasNextPage={hasNextPage}
+        errorMessage={error?.message}
         hasSubmittedSearch={submittedSearch !== null}
-        onPrevious={() => setPage((current) => Math.max(current - 1, 1))}
-        onNext={() => setPage((current) => current + 1)}
+        onLoadMore={handleLoadMore}
       />
     </main>
   );
