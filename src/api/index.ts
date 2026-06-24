@@ -20,7 +20,8 @@ export {
   updateArticle,
   uploadArticleImage,
 } from "./articles";
-export { getCurrentUser, login, logout } from "./auth";
+export { createUser, getCurrentUser, login, logout } from "./auth";
+export type { CreateUserPayload, CreatedUser } from "./auth";
 export type { CommentItem, GetSubjectCommentsParams, SubjectCommentSort } from "./comments";
 export { getSubjectComments, likeComment, unlikeComment } from "./comments";
 export type {

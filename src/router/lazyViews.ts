@@ -7,6 +7,7 @@ export const ArticleView = lazy(() => import("@/views/Article"));
 export const LoginView = lazy(() => import("@/views/Login"));
 export const ProfileView = lazy(() => import("@/views/Profile"));
 export const RankingView = lazy(() => import("@/views/Ranking"));
+export const RegisterView = lazy(() => import("@/views/Register"));
 export const SearchView = lazy(() => import("@/views/Search"));
 export const SettingsPasswordView = lazy(
   () => import("@/views/Settings/Password"),

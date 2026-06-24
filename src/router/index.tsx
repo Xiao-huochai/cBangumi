@@ -13,6 +13,7 @@ import {
   LoginView,
   ProfileView,
   RankingView,
+  RegisterView,
   SearchView,
   SettingsPasswordView,
   SettingsView,
@@ -126,6 +127,14 @@ export const router = createBrowserRouter([
             element: (
               <LazyRoute>
                 <LoginView />
+              </LazyRoute>
+            ),
+          },
+          {
+            path: "register",
+            element: (
+              <LazyRoute>
+                <RegisterView />
               </LazyRoute>
             ),
           },
