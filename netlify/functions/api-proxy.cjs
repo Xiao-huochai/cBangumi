@@ -33,6 +33,10 @@ function getApiPath(event) {
     ? event.path.slice(prefix.length)
     : event.path;
 
+  if (path === "/api" || path.startsWith("/api/")) {
+    return path;
+  }
+
   return `/api${path.startsWith("/") ? path : `/${path}`}`;
 }
 
@@ -92,7 +96,10 @@ exports.handler = async (event) => {
   });
 
   const body = Buffer.from(await response.arrayBuffer());
-  const headers = getResponseHeaders(response);
+  const headers = {
+    ...getResponseHeaders(response),
+    "cache-control": "no-store",
+  };
   const setCookie = typeof response.headers.getSetCookie === "function"
     ? response.headers.getSetCookie()
     : [];
