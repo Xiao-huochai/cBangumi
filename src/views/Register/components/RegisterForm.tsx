@@ -21,7 +21,11 @@ export function RegisterForm() {
   } = useRegisterForm();
 
   return (
-    <form className={styles.form} onSubmit={(event) => void handleSubmit(event)}>
+    <form
+      id="register-title"
+      className={styles.form}
+      onSubmit={(event) => void handleSubmit(event)}
+    >
       <label className={styles.field}>
         <span className={styles.label}>
           昵称 <span className={styles.required}>*</span>
@@ -30,7 +34,7 @@ export function RegisterForm() {
           className={styles.input}
           value={name}
           onChange={(event) => setName(event.target.value)}
-          placeholder="例如 chai"
+          placeholder="请输入昵称"
           autoComplete="nickname"
         />
       </label>
@@ -43,7 +47,7 @@ export function RegisterForm() {
           className={styles.input}
           value={phone}
           onChange={(event) => setPhone(event.target.value)}
-          placeholder="手机号，邮箱二选一"
+          placeholder="请输入手机号"
           autoComplete="tel"
           inputMode="tel"
         />
@@ -57,7 +61,7 @@ export function RegisterForm() {
           className={styles.input}
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          placeholder="邮箱，手机号二选一"
+          placeholder="请输入邮箱"
           autoComplete="email"
           inputMode="email"
         />

@@ -15,7 +15,11 @@ export function LoginForm() {
   } = useLoginForm();
 
   return (
-    <form className={styles.form} onSubmit={(event) => void handleSubmit(event)}>
+    <form
+      id="login-title"
+      className={styles.form}
+      onSubmit={(event) => void handleSubmit(event)}
+    >
       <label className={styles.field}>
         <span className={styles.label}>账号</span>
         <input
