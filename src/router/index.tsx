@@ -7,6 +7,7 @@ import { ProtectedRoute } from "@/router/ProtectedRoute";
 import { PublicOnlyRoute } from "@/router/PublicOnlyRoute";
 import {
   ArticleCreateView,
+  ArticleDetailView,
   ArticleEditView,
   ArticleManageView,
   ArticleView,
@@ -34,6 +35,14 @@ export const router = createBrowserRouter([
         element: (
           <LazyRoute>
             <ArticleView />
+          </LazyRoute>
+        ),
+      },
+      {
+        path: "articles/:articleId",
+        element: (
+          <LazyRoute>
+            <ArticleDetailView />
           </LazyRoute>
         ),
       },

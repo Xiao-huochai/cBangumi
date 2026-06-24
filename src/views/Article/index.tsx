@@ -51,6 +51,7 @@ function ArticleView() {
         {articles.map((article) => (
           <ArticleRow
             key={article.id}
+            href={`/articles/${article.id}`}
             img={article.coverUrl || article.subjectCoverUrl || "/favicon.svg"}
             title={article.title}
             excerpt={getArticleExcerpt(article.summary || article.content)}
