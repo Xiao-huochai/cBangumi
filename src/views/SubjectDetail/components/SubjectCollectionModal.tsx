@@ -146,7 +146,7 @@ function SubjectCollectionModal({
           <span>评论</span>
           <textarea
             value={commentContent}
-            placeholder="写点自己的感受，保存后再接接口。"
+            placeholder="写点自己的感受"
             maxLength={800}
             rows={6}
             onChange={(event) => onCommentChange(event.target.value)}
