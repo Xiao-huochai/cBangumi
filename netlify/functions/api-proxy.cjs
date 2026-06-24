@@ -11,6 +11,18 @@ const HOP_BY_HOP_HEADERS = new Set([
   "upgrade",
 ]);
 
+const UPSTREAM_HEADERS_TO_STRIP = new Set([
+  "access-control-allow-credentials",
+  "access-control-allow-headers",
+  "access-control-allow-methods",
+  "access-control-allow-origin",
+  "access-control-expose-headers",
+  "access-control-max-age",
+  "access-control-request-headers",
+  "access-control-request-method",
+  "vary",
+]);
+
 function normalizeOrigin(origin) {
   return origin.replace(/\/+$/, "");
 }
@@ -42,7 +54,13 @@ function getResponseHeaders(response) {
   const headers = {};
 
   response.headers.forEach((value, name) => {
-    if (!HOP_BY_HOP_HEADERS.has(name.toLowerCase()) && name.toLowerCase() !== "set-cookie") {
+    const lowerName = name.toLowerCase();
+
+    if (
+      !HOP_BY_HOP_HEADERS.has(lowerName) &&
+      !UPSTREAM_HEADERS_TO_STRIP.has(lowerName) &&
+      lowerName !== "set-cookie"
+    ) {
       headers[name] = value;
     }
   });
