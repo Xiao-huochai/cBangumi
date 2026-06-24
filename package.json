@@ -3,10 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "packageManager": "pnpm@10.31.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "deploy": "pnpm build && rsync -av --delete dist/ root@47.109.93.18:/opt/cbangumi/frontend/dist/",
+    "deploy": "pnpm build && rsync -av --delete dist/ \"$DEPLOY_TARGET\"",
     "lint": "eslint .",
     "preview": "vite preview"
   },
