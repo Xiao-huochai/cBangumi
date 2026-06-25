@@ -6,6 +6,7 @@ import { ChevronDown, Flame, Search } from "lucide-react";
 import { getRankList } from "@/api";
 import { PageNavBar } from "@/components/PageNavBar";
 import { SUBJECT_TYPE_OPTIONS } from "@/constants/subjects";
+import { useDebouncedCallback } from "@/hooks";
 import type { SubjectSort, SubjectType } from "@/api/request";
 import { RankingCard } from "./components/RankingCard";
 import { RankingPagination } from "./components/RankingPagination";
@@ -84,13 +85,13 @@ function RankingView() {
     setOpenMenu(null);
   }
 
-  function handleHotSortClick() {
+  const handleHotSortClick = useDebouncedCallback(() => {
     setSort((current) =>
       current === "FAVORITE_TOTAL" ? "SITE_RANK" : "FAVORITE_TOTAL",
     );
     setPage(1);
     setOpenMenu(null);
-  }
+  });
 
   const { data, isLoading, error } = useQuery({
     queryKey: getRankingQueryKey(subjectType, metaTag, sort, page),
@@ -99,6 +100,7 @@ function RankingView() {
     refetchInterval: 1000 * 60 * 15,
   });
   const list = data?.records ?? [];
+  const hasRankingData = Boolean(data);
   const hasPrevious = data?.hasPrevious ?? page > 1;
   const hasNext = data?.hasNext ?? false;
 
@@ -252,13 +254,15 @@ function RankingView() {
           />
         ))}
       </div>
-      <RankingPagination
-        page={page}
-        hasPrevious={hasPrevious}
-        hasNext={hasNext}
-        onPrevious={() => setPage((current) => Math.max(current - 1, 1))}
-        onNext={() => setPage((current) => current + 1)}
-      />
+      {hasRankingData && (
+        <RankingPagination
+          page={page}
+          hasPrevious={hasPrevious}
+          hasNext={hasNext}
+          onPrevious={() => setPage((current) => Math.max(current - 1, 1))}
+          onNext={() => setPage((current) => current + 1)}
+        />
+      )}
     </main>
   );
 }
