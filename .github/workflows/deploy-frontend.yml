@@ -1,0 +1,90 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+concurrency:
+  group: frontend-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.31.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        env:
+          # Keep API requests relative so the same build works behind nginx
+          # on 47.109.93.18 and behind Netlify redirects/functions.
+          VITE_API_BASE_URL: ""
+        run: pnpm build
+
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: dist
+          if-no-files-found: error
+
+  deploy-server:
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/master' }}
+    env:
+      SERVER_HOST: ${{ secrets.SERVER_HOST }}
+      SERVER_USER: ${{ secrets.SERVER_USER }}
+      SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
+      FRONTEND_DEPLOY_PATH: ${{ secrets.FRONTEND_DEPLOY_PATH || '/opt/cbangumi/frontend/dist' }}
+
+    steps:
+      - name: Skip server deploy when secrets are not configured
+        if: ${{ env.SERVER_HOST == '' || env.SERVER_USER == '' || env.SERVER_SSH_KEY == '' }}
+        run: |
+          echo "SERVER_HOST, SERVER_USER, or SERVER_SSH_KEY is not configured; skipping server deploy."
+
+      - name: Download dist artifact
+        if: ${{ env.SERVER_HOST != '' && env.SERVER_USER != '' && env.SERVER_SSH_KEY != '' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: dist
+
+      - name: Configure SSH
+        if: ${{ env.SERVER_HOST != '' && env.SERVER_USER != '' && env.SERVER_SSH_KEY != '' }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "${SERVER_SSH_KEY}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${SERVER_HOST}" >> ~/.ssh/known_hosts
+
+      - name: Deploy to server nginx directory
+        if: ${{ env.SERVER_HOST != '' && env.SERVER_USER != '' && env.SERVER_SSH_KEY != '' }}
+        run: |
+          rsync -az --delete -e "ssh -i ~/.ssh/deploy_key" \
+            dist/ "${SERVER_USER}@${SERVER_HOST}:${FRONTEND_DEPLOY_PATH}/"
+
+      - name: Smoke test server frontend
+        if: ${{ env.SERVER_HOST != '' && env.SERVER_USER != '' && env.SERVER_SSH_KEY != '' }}
+        run: |
+          curl --fail --show-error --silent --max-time 20 "http://${SERVER_HOST}/" > /tmp/index.html
+          grep -q '/assets/' /tmp/index.html
