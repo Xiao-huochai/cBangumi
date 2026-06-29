@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Img } from "@/components/Img";
 import { StarIcon } from "@/components/StarIcon";
 import styles from "./RankingCard.module.scss";
 
@@ -20,7 +21,7 @@ export function RankingCard({
   return (
     <Link className={styles.card} to={`/subjects/${subjectId}`}>
       <div className={styles.coverWrap}>
-        <img className={styles.cover} src={coverUrl} alt={title} />
+        <Img className={styles.cover} src={coverUrl} alt={title} />
       </div>
 
       <div className={styles.info}>

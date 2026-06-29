@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+import { Img } from "@/components/Img";
 import { RatingStars } from "@/components/RatingStars";
 import type { CollectionStatus } from "@/api/profile";
 import styles from "./CollectionCard.module.scss";
@@ -34,7 +35,7 @@ export function CollectionCard({
   return (
     <Link className={styles.card} to={`/subjects/${subjectId}`}>
       <div className={styles.coverWrap}>
-        <img className={styles.cover} src={coverUrl} alt={subjectTitle} />
+        <Img className={styles.cover} src={coverUrl} alt={subjectTitle} />
       </div>
 
       <div className={styles.content}>

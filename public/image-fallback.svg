@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="640" viewBox="0 0 480 640" role="img" aria-label="Image fallback">
+  <rect width="480" height="640" fill="#eef1f5"/>
+  <rect x="36" y="36" width="408" height="568" rx="28" fill="#f8fafc" stroke="#d9dee7" stroke-width="8"/>
+  <path d="M132 398l74-92 54 66 42-50 76 76H132z" fill="#c9d2df"/>
+  <circle cx="312" cy="230" r="38" fill="#d8e0ea"/>
+  <text x="240" y="476" fill="#7b8492" font-family="Arial, sans-serif" font-size="42" font-weight="700" text-anchor="middle">IMG</text>
+</svg>

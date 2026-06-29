@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Check, Link2, Plus, X } from "lucide-react";
 
+import { Img } from "@/components/Img";
 import { SUBJECT_TYPE_OPTIONS } from "@/constants/subjects";
 import type { CollectionStatus, UserCollectionItem } from "@/api/profile";
 import type { SubjectType } from "@/api/request";
@@ -89,7 +90,7 @@ export function ArticleSubjectPicker({
 
       {selectedSubject ? (
         <div className={styles.selectedSubject}>
-          <img src={selectedSubject.coverUrl} alt={selectedSubject.subjectTitle} />
+          <Img src={selectedSubject.coverUrl} alt={selectedSubject.subjectTitle} />
           <div>
             <span>已关联</span>
             <strong>{selectedSubject.subjectTitle}</strong>
@@ -174,7 +175,7 @@ export function ArticleSubjectPicker({
                     className={isSelected ? styles.collectionItemSelected : styles.collectionItem}
                     onClick={() => handleSelect(item)}
                   >
-                    <img src={item.coverUrl} alt={item.subjectTitle} />
+                    <Img src={item.coverUrl} alt={item.subjectTitle} />
                     <div className={styles.itemContent}>
                       <div className={styles.itemTitleRow}>
                         <strong>{item.subjectTitle}</strong>

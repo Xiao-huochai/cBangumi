@@ -2,6 +2,7 @@ import { Edit3, EyeOff, Rocket, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import type { ArticleCard } from "@/api";
+import { Img } from "@/components/Img";
 import styles from "./ArticleManageRow.module.scss";
 
 function formatDate(value?: string | null) {
@@ -35,9 +36,9 @@ export function ArticleManageRow({
 
   return (
     <article className={styles.row}>
-      <img
+      <Img
         className={styles.cover}
-        src={article.coverUrl || article.subjectCoverUrl || "/favicon.svg"}
+        src={article.coverUrl || article.subjectCoverUrl || undefined}
         alt={article.title}
       />
       <div className={styles.content}>

@@ -52,7 +52,7 @@ function ArticleView() {
           <ArticleRow
             key={article.id}
             href={`/articles/${article.id}`}
-            img={article.coverUrl || article.subjectCoverUrl || "/favicon.svg"}
+            img={article.coverUrl || article.subjectCoverUrl || ""}
             title={article.title}
             excerpt={getArticleExcerpt(article.summary || article.content)}
             author={article.authorName || "匿名作者"}

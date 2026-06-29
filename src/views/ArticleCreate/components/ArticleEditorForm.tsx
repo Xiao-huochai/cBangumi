@@ -24,6 +24,7 @@ import {
   ArticleSubjectPicker,
   type ArticleSubjectSelection,
 } from "./ArticleSubjectPicker";
+import { Img } from "@/components/Img";
 import styles from "./ArticleEditorForm.module.scss";
 
 export interface ArticleEditorInitialValue {
@@ -221,7 +222,7 @@ export function ArticleEditorForm({
         />
         <div className={styles.uploadBox}>
           {coverUrl ? (
-            <img src={coverUrl} alt={coverName || "文章封面"} />
+            <Img src={coverUrl} alt={coverName || "文章封面"} />
           ) : (
             <span>{uploadCoverMutation.isPending ? "上传中..." : "选择图片上传"}</span>
           )}

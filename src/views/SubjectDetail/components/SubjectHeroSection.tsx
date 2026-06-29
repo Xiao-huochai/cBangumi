@@ -1,5 +1,6 @@
 import type { SubjectDetail } from "@/api/request";
 
+import { Img } from "@/components/Img";
 import styles from "./SubjectHeroSection.module.scss";
 
 interface SubjectHeroSectionProps {
@@ -10,7 +11,7 @@ function SubjectHeroSection({ subject }: SubjectHeroSectionProps) {
   return (
     <section className={styles.hero}>
       <div className={styles.coverWrap}>
-        <img
+        <Img
           className={styles.cover}
           src={subject.coverUrl}
           alt={subject.nameCn || subject.name}

@@ -18,7 +18,7 @@ function ArticleDetailView() {
   );
 
   const title = article?.title || "文章详情";
-  const coverUrl = article?.coverUrl || article?.subjectCoverUrl || "/favicon.svg";
+  const coverUrl = article?.coverUrl || article?.subjectCoverUrl || "";
   const date = article?.publishedAt || article?.updatedAt || "";
 
   return (

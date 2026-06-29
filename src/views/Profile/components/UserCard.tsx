@@ -1,3 +1,4 @@
+import { Img } from "@/components/Img";
 import styles from "./UserCard.module.scss";
 
 interface UserCardProps {
@@ -26,7 +27,7 @@ export function UserCard({ name, avatarId }: UserCardProps) {
     <section className={styles.card} aria-label="用户卡片">
       <div className={styles.avatar}>
         {avatarSrc ? (
-          <img src={avatarSrc} alt={`${name} 的头像`} />
+          <Img src={avatarSrc} alt={`${name} 的头像`} />
         ) : (
           <span>{getDisplayInitial(name)}</span>
         )}

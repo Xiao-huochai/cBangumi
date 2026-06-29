@@ -15,7 +15,7 @@ function getSelectedSubject(
   return {
     subjectId,
     subjectTitle,
-    coverUrl: subjectCoverUrl || "/favicon.svg",
+    coverUrl: subjectCoverUrl || "",
   };
 }
 

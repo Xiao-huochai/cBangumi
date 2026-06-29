@@ -17,6 +17,7 @@ import {
   type CommentItem,
   type SubjectCommentSort,
 } from "@/api";
+import { Img } from "@/components/Img";
 import { RatingStars } from "@/components/RatingStars";
 import type { PageResult } from "@/types";
 import { useAuthStore } from "@/store";
@@ -207,7 +208,7 @@ function SubjectCommentsSection({ subjectId }: SubjectCommentsSectionProps) {
               <article key={comment.id} className={styles.commentCard}>
                 <div className={styles.commentAvatar}>
                   {avatarSrc ? (
-                    <img src={avatarSrc} alt={`${comment.userName} 的头像`} />
+                    <Img src={avatarSrc} alt={`${comment.userName} 的头像`} />
                   ) : (
                     <span>{getDisplayInitial(comment.userName)}</span>
                   )}

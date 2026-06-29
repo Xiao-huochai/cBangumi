@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
+import { Img } from "@/components/Img";
 import { SUBJECT_TYPE_OPTIONS } from "@/constants/subjects";
 import type { SubjectSearchItem } from "@/api";
 import styles from "./SearchResults.module.scss";
@@ -89,7 +90,7 @@ function SearchResultRow({ item }: { item: SubjectSearchItem }) {
 
   return (
     <Link className={styles.searchResult} to={`/subjects/${item.id}`}>
-      <img className={styles.resultCover} src={item.coverUrl} alt={title} />
+      <Img className={styles.resultCover} src={item.coverUrl} alt={title} />
       <div className={styles.resultInfo}>
         <div className={styles.resultTitleRow}>
           <h2>{title}</h2>

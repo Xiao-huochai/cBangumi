@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+import { Img } from "@/components/Img";
 import styles from "./ArticleRow.module.scss";
 
 interface ArticleRowProps {
@@ -36,7 +37,7 @@ export function ArticleRow({
   const content = (
     <>
       <div className={styles.coverWrap}>
-        <img className={styles.cover} src={img} alt={title} />
+        <Img className={styles.cover} src={img} alt={title} />
       </div>
       <div className={styles.content}>
         <h2 className={styles.title}>{title}</h2>

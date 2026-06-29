@@ -1,3 +1,4 @@
+import { Img } from "@/components/Img";
 import styles from "./ArticleCoverSection.module.scss";
 
 interface ArticleCoverSectionProps {
@@ -11,7 +12,7 @@ export function ArticleCoverSection({
 }: ArticleCoverSectionProps) {
   return (
     <section className={styles.coverSection} aria-label="文章封面">
-      <img className={styles.cover} src={coverUrl} alt={title} />
+      <Img className={styles.cover} src={coverUrl} alt={title} />
     </section>
   );
 }
