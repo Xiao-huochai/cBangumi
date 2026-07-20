@@ -7,7 +7,8 @@
 }
 
 .coverWrap {
-  max-width: 280px;
+  width: min(280px, 100%);
+  aspect-ratio: 3 / 4;
   margin: 0 auto;
   overflow: hidden;
   background: #e5e7eb;
@@ -16,7 +17,7 @@
 
 .cover {
   width: 100%;
-  aspect-ratio: 3 / 4;
+  height: 100%;
   object-fit: cover;
 }
 
