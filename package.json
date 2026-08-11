@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "analyze": "tsc -b && vite build --mode analyze",
     "deploy": "pnpm build && rsync -av --delete dist/ \"$DEPLOY_TARGET\"",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -37,6 +38,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.6.0",
+    "rollup-plugin-visualizer": "^7.0.1",
     "sass": "^1.100.0",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
