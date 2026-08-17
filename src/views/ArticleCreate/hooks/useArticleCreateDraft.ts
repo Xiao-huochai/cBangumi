@@ -48,7 +48,10 @@ export function useArticleCreateDraft() {
       return publishArticle(article.id);
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["my-articles"] });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["my-articles"] }),
+        queryClient.invalidateQueries({ queryKey: ["articles"] }),
+      ]);
       navigate("/articles/manage");
     },
   });

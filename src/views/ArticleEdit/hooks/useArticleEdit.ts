@@ -27,6 +27,7 @@ export function useArticleEdit(articleId: number, enabled: boolean) {
         queryKey: ["article-detail", articleId],
       });
       void queryClient.invalidateQueries({ queryKey: ["my-articles"] });
+      void queryClient.invalidateQueries({ queryKey: ["articles"] });
     },
   });
 
@@ -36,8 +37,11 @@ export function useArticleEdit(articleId: number, enabled: boolean) {
 
       return publishArticle(articleId);
     },
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ["my-articles"] });
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["my-articles"] }),
+        queryClient.invalidateQueries({ queryKey: ["articles"] }),
+      ]);
       navigate("/articles/manage");
     },
   });

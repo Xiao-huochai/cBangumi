@@ -34,6 +34,7 @@ export function useArticleManage() {
     mutationFn: publishArticle,
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["my-articles"] });
+      void queryClient.invalidateQueries({ queryKey: ["articles"] });
     },
   });
 
@@ -41,6 +42,7 @@ export function useArticleManage() {
     mutationFn: hideArticle,
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["my-articles"] });
+      void queryClient.invalidateQueries({ queryKey: ["articles"] });
     },
   });
 
@@ -48,6 +50,7 @@ export function useArticleManage() {
     mutationFn: deleteArticle,
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["my-articles"] });
+      void queryClient.invalidateQueries({ queryKey: ["articles"] });
     },
   });
 
