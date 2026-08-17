@@ -85,7 +85,7 @@ API_ORIGIN=https://your-api.example.com
 
 1. 使用 `node:22-alpine` 安装依赖并构建前端。
 2. 使用 `nginx:1.27-alpine` 托管 `dist/` 静态文件。
-3. Nginx 将 `/api/` 代理到 `API_PROXY_PASS`。
+3. Nginx 将 `/api/` 和后端生成的 `/uploads/` 图片地址代理到 `API_PROXY_PASS`。
 
 使用 Docker Compose：
 
