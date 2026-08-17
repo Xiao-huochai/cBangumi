@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -11,6 +11,7 @@ import {
 
 export function useArticleCreateDraft() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [successText, setSuccessText] = useState("");
   const draftsQuery = useQuery({
     queryKey: ["my-articles", "latest-draft"],
@@ -33,8 +34,9 @@ export function useArticleCreateDraft() {
 
   const createMutation = useMutation({
     mutationFn: createArticle,
-    onSuccess: (article) => {
+    onSuccess: async (article) => {
       setSuccessText("草稿已保存");
+      await queryClient.invalidateQueries({ queryKey: ["my-articles"] });
       navigate(`/articles/${article.id}/edit`, { replace: true });
     },
   });
@@ -45,7 +47,8 @@ export function useArticleCreateDraft() {
 
       return publishArticle(article.id);
     },
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["my-articles"] });
       navigate("/articles/manage");
     },
   });
