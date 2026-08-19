@@ -33,7 +33,12 @@ function getApiPath(event) {
     ? event.path.slice(prefix.length)
     : event.path;
 
-  if (path === "/api" || path.startsWith("/api/")) {
+  if (
+    path === "/api" ||
+    path.startsWith("/api/") ||
+    path === "/uploads" ||
+    path.startsWith("/uploads/")
+  ) {
     return path;
   }
 
