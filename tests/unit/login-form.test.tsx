@@ -1,13 +1,13 @@
 import { http, HttpResponse } from "msw";
-import { MemoryRouter, useLocation } from "react-router-dom";
-import { expect, test, beforeEach } from "vitest";
+import { useLocation } from "react-router-dom";
+import { expect, test } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+import { currentUserQueryKey } from "@/hooks";
 import { LoginForm } from "@/views/Login/components/LoginForm";
-import { useAuthStore } from "@/store";
 import { server } from "../mocks/server";
-import { resetAuth, testUser } from "./test-utils";
+import { createTestWrapper, testUser } from "./test-utils";
 
 function LocationDisplay() {
   const location = useLocation();
@@ -15,18 +15,11 @@ function LocationDisplay() {
   return <output data-testid="location">{location.pathname}</output>;
 }
 
-beforeEach(() => {
-  resetAuth();
-});
-
 test("登录表单在缺少账号或密码时显示本地校验错误", async () => {
   const user = userEvent.setup();
+  const { TestWrapper } = createTestWrapper();
 
-  render(
-    <MemoryRouter>
-      <LoginForm />
-    </MemoryRouter>,
-  );
+  render(<LoginForm />, { wrapper: TestWrapper });
 
   await user.click(screen.getByRole("button", { name: "登录" }));
   expect(screen.getByText("请填写手机号或邮箱")).toBeVisible();
@@ -50,11 +43,19 @@ test("登录成功后更新认证态并回到原始页面", async () => {
     }),
   );
 
+  const { queryClient, TestWrapper } = createTestWrapper([
+    {
+      pathname: "/login",
+      state: { from: { pathname: "/settings" } },
+    },
+  ]);
+
   render(
-    <MemoryRouter initialEntries={[{ pathname: "/login", state: { from: { pathname: "/settings" } } }]}>
+    <>
       <LoginForm />
       <LocationDisplay />
-    </MemoryRouter>,
+    </>,
+    { wrapper: TestWrapper },
   );
 
   await user.type(screen.getByPlaceholderText("请输入邮箱或手机号"), "user@example.com");
@@ -63,5 +64,5 @@ test("登录成功后更新认证态并回到原始页面", async () => {
 
   await expect.poll(() => screen.getByTestId("location").textContent).toBe("/settings");
   expect(receivedBody).toEqual({ account: "user@example.com", password: "password123" });
-  expect(useAuthStore.getState().user).toEqual(testUser);
+  expect(queryClient.getQueryData(currentUserQueryKey)).toEqual(testUser);
 });

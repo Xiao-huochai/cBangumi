@@ -3,11 +3,11 @@ import { useState } from "react";
 
 import { updateUserPassword } from "@/api";
 import { PageNavBar } from "@/components/PageNavBar";
-import { useAuthStore } from "@/store";
+import { useAuth } from "@/hooks";
 import styles from "./Password.module.scss";
 
 function SettingsPasswordView() {
-  const user = useAuthStore((state) => state.user);
+  const { user } = useAuth();
   const [oldPassword, setOldPassword] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

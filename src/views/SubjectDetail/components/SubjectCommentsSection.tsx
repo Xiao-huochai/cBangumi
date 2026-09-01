@@ -19,8 +19,8 @@ import {
 } from "@/api";
 import { Img } from "@/components/Img";
 import { RatingStars } from "@/components/RatingStars";
+import { useAuth } from "@/hooks";
 import type { PageResult } from "@/types";
-import { useAuthStore } from "@/store";
 import styles from "./SubjectCommentsSection.module.scss";
 
 interface SubjectCommentsSectionProps {
@@ -94,7 +94,7 @@ function SubjectCommentsSection({ subjectId }: SubjectCommentsSectionProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const queryClient = useQueryClient();
-  const { initialized, isAuthenticated, user } = useAuthStore();
+  const { initialized, isAuthenticated, user } = useAuth();
   const [sort, setSort] = useState<SubjectCommentSort>("latest");
   const commentsQueryKey = ["subject-comments", subjectId, sort] as const;
   const {

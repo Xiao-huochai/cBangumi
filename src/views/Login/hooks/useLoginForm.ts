@@ -1,16 +1,15 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { useAuthStore } from "@/store";
+import { useSignInMutation } from "@/hooks";
 
 export function useLoginForm() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { signIn } = useAuthStore();
+  const signInMutation = useSignInMutation();
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [submitting, setSubmitting] = useState(false);
   const redirectTo =
     typeof location.state === "object" &&
     location.state &&
@@ -38,18 +37,18 @@ export function useLoginForm() {
       return;
     }
 
-    setSubmitting(true);
     setError("");
 
     try {
-      await signIn(accountValue, passwordValue);
+      await signInMutation.mutateAsync({
+        account: accountValue,
+        password: passwordValue,
+      });
       navigate(redirectTo, { replace: true });
     } catch (requestError) {
       setError(
         requestError instanceof Error ? requestError.message : "登录失败",
       );
-    } finally {
-      setSubmitting(false);
     }
   }
 
@@ -60,6 +59,6 @@ export function useLoginForm() {
     password,
     setAccount,
     setPassword,
-    submitting,
+    submitting: signInMutation.isPending,
   };
 }

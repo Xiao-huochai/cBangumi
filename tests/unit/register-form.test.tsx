@@ -1,23 +1,15 @@
-import { MemoryRouter } from "react-router-dom";
-import { expect, test, beforeEach } from "vitest";
+import { expect, test } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { RegisterForm } from "@/views/Register/components/RegisterForm";
-import { resetAuth } from "./test-utils";
-
-beforeEach(() => {
-  resetAuth();
-});
+import { createTestWrapper } from "./test-utils";
 
 test("注册表单会阻止无联系方式、弱密码与不一致密码", async () => {
   const user = userEvent.setup();
+  const { TestWrapper } = createTestWrapper();
 
-  render(
-    <MemoryRouter>
-      <RegisterForm />
-    </MemoryRouter>,
-  );
+  render(<RegisterForm />, { wrapper: TestWrapper });
 
   await user.click(screen.getByRole("button", { name: "注册并登录" }));
   expect(screen.getByText("请填写昵称")).toBeVisible();

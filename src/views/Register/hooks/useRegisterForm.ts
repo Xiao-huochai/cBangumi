@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { createUser } from "@/api";
-import { useAuthStore } from "@/store";
+import { useSignInMutation } from "@/hooks";
 
 export function useRegisterForm() {
   const navigate = useNavigate();
-  const { signIn } = useAuthStore();
+  const signInMutation = useSignInMutation();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -64,7 +64,10 @@ export function useRegisterForm() {
         email: emailValue || undefined,
         password: passwordValue,
       });
-      await signIn(emailValue || phoneValue, passwordValue);
+      await signInMutation.mutateAsync({
+        account: emailValue || phoneValue,
+        password: passwordValue,
+      });
       navigate("/profile", { replace: true });
     } catch (requestError) {
       setError(

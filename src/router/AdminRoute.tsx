@@ -1,9 +1,9 @@
 import { Navigate, Outlet } from "react-router-dom";
 
-import { useAuthStore } from "@/store";
+import { useAuth } from "@/hooks";
 
 export function AdminRoute() {
-  const { initialized, user } = useAuthStore();
+  const { initialized, user } = useAuth();
 
   if (!initialized) {
     return null;

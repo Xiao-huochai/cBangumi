@@ -5,14 +5,14 @@ import { getMyCollections } from "@/api";
 import { PageNavBar } from "@/components/PageNavBar";
 import type { SubjectType } from "@/api/request";
 import { SUBJECT_TYPE_OPTIONS } from "@/constants/subjects";
-import { useAuthStore } from "@/store";
+import { useAuth } from "@/hooks";
 import { CollectionCard } from "./components/CollectionCard";
 import { ProfileSettingsLink } from "./components/ProfileSettingsLink";
 import { UserCard } from "./components/UserCard";
 import styles from "./index.module.scss";
 
 function ProfileView() {
-  const { user } = useAuthStore();
+  const { user } = useAuth();
   const [subjectType, setSubjectType] = useState<SubjectType>("GAME");
   const subjectTypeLabel =
     SUBJECT_TYPE_OPTIONS.find((option) => option.value === subjectType)

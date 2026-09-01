@@ -1,14 +1,10 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { http, HttpResponse } from "msw";
-import { expect, test, beforeEach } from "vitest";
+import { expect, test } from "vitest";
 
 import useSubjectCollectionState from "@/views/SubjectDetail/hooks/useSubjectCollectionState";
 import { server } from "../mocks/server";
-import { createTestWrapper, resetAuth, testUser } from "./test-utils";
-
-beforeEach(() => {
-  resetAuth(testUser);
-});
+import { createTestWrapper, testUser } from "./test-utils";
 
 test("收藏状态保存评分与短评后更新本地状态", async () => {
   let receivedBody: unknown;
@@ -39,7 +35,7 @@ test("收藏状态保存评分与短评后更新本地状态", async () => {
       });
     }),
   );
-  const { TestWrapper } = createTestWrapper(["/subjects/7"]);
+  const { TestWrapper } = createTestWrapper(["/subjects/7"], testUser);
   const { result } = renderHook(
     () => useSubjectCollectionState({ invalidSubjectId: false, subjectId: 7 }),
     { wrapper: TestWrapper },

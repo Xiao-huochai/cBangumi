@@ -7,7 +7,7 @@ import {
   updateMySubjectState,
   type CollectionStatus,
 } from "@/api";
-import { useAuthStore } from "@/store";
+import { useAuth } from "@/hooks";
 
 interface UseSubjectCollectionStateParams {
   invalidSubjectId: boolean;
@@ -52,7 +52,7 @@ export default function useSubjectCollectionState({
   const navigate = useNavigate();
   const location = useLocation();
   const queryClient = useQueryClient();
-  const { initialized, isAuthenticated, user } = useAuthStore();
+  const { initialized, isAuthenticated, user } = useAuth();
   const [isCollectionModalOpen, setCollectionModalOpen] = useState(false);
   const [draftRatingScore, setDraftRatingScore] = useState<number | null>(null);
   const [draftCommentContent, setDraftCommentContent] = useState("");

@@ -3,7 +3,7 @@ import { SquarePen } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { getArticleList } from "@/api";
-import { useAuthStore } from "@/store";
+import { useAuth } from "@/hooks";
 
 import { ArticleRow } from "./components/ArticleRow";
 import styles from "./index.module.scss";
@@ -24,7 +24,7 @@ function getArticleExcerpt(value?: string | null) {
 }
 
 function ArticleView() {
-  const user = useAuthStore((state) => state.user);
+  const { user } = useAuth();
   const { data, error, isLoading } = useQuery({
     queryKey: ["articles", PAGE_SIZE],
     queryFn: () =>
