@@ -8,10 +8,15 @@
 }
 
 .searchResults {
-  display: grid;
-  gap: 10px;
-  align-content: start;
-  min-height: 620px;
+  position: relative;
+  width: 100%;
+}
+
+.virtualRow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
 }
 
 .loadMoreStatus {

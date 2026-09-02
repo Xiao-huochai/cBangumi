@@ -18,6 +18,25 @@ test("用户可搜索条目并进入详情页", async ({ page }) => {
   await expect(api.searchRequests[0]?.searchParams.get("type")).toBe("GAME");
 });
 
+test("搜索结果使用虚拟滚动并继续加载下一页", async ({ page }) => {
+  const api = await mockApi(page, { searchResultCount: 100 });
+
+  await page.goto("/search");
+  await page.getByRole("searchbox", { name: "搜索条目" }).fill("测试");
+  await page.getByRole("button", { name: "搜索", exact: true }).click();
+
+  await expect(page.getByText("找到 100 个结果")).toBeVisible();
+  const resultList = page.getByRole("list", { name: "搜索结果" });
+  await expect.poll(() => resultList.getByRole("listitem").count()).toBeGreaterThan(0);
+  await expect.poll(() => resultList.getByRole("listitem").count()).toBeLessThan(20);
+
+  await page.getByText("继续下滑加载更多").scrollIntoViewIfNeeded();
+
+  await expect.poll(() => api.searchRequests.length).toBeGreaterThan(1);
+  await expect.poll(() => resultList.getByRole("listitem").count()).toBeLessThan(40);
+  await expect(api.searchRequests[1]?.searchParams.get("page")).toBe("2");
+});
+
 test("登录用户可收藏、评分并写短评", async ({ page }) => {
   const api = await mockApi(page, { authenticatedUser: regularUser });
 

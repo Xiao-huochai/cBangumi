@@ -18,6 +18,7 @@ type SubjectState = {
 
 type MockApiOptions = {
   authenticatedUser?: AuthUser | null;
+  searchResultCount?: number;
 };
 
 export const regularUser: AuthUser = {
@@ -67,9 +68,23 @@ async function readBody(route: Route) {
 
 export async function mockApi(
   browserPage: Page,
-  { authenticatedUser = null }: MockApiOptions = {},
+  {
+    authenticatedUser = null,
+    searchResultCount = 1,
+  }: MockApiOptions = {},
 ): Promise<MockApi> {
   let currentUser = authenticatedUser;
+  const searchResults = Array.from({ length: searchResultCount }, (_, index) => ({
+    id: index === 0 ? 7 : 1_000 + index,
+    type: "GAME",
+    name: index === 0 ? "Test Subject" : `Test Subject ${index + 1}`,
+    nameCn: index === 0 ? "测试条目" : `测试条目 ${index + 1}`,
+    score: 8.6,
+    rank: 12 + index,
+    date: "2026-01-01",
+    summary: `用于端到端测试的条目 ${index + 1}。`,
+    coverUrl: "",
+  }));
   let subjectState: SubjectState = {
     collectionStatus: null,
     ratingScore: null,
@@ -129,17 +144,21 @@ export async function mockApi(
 
     if (method === "GET" && pathname === "/api/search/subjects") {
       mock.searchRequests.push(url);
-      await respond(route, page([{
-        id: 7,
-        type: "GAME",
-        name: "Test Subject",
-        nameCn: "测试条目",
-        score: 8.6,
-        rank: 12,
-        date: "2026-01-01",
-        summary: "用于端到端测试的条目。",
-        coverUrl: "",
-      }]));
+      const currentPage = Number(url.searchParams.get("page") ?? 1);
+      const pageSize = Number(url.searchParams.get("size") ?? 20);
+      const start = (currentPage - 1) * pageSize;
+      const records = searchResults.slice(start, start + pageSize);
+      const pages = Math.ceil(searchResults.length / pageSize);
+
+      await respond(route, {
+        records,
+        total: searchResults.length,
+        page: currentPage,
+        size: pageSize,
+        pages,
+        hasPrevious: currentPage > 1,
+        hasNext: currentPage < pages,
+      });
       return;
     }
 
