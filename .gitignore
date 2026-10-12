@@ -16,6 +16,11 @@ playwright-report/
 test-results/
 blob-report/
 
+# Codex working notes
+/task_plan.md
+/findings.md
+/progress.md
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
